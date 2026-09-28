@@ -77,7 +77,7 @@ body.has-top .topbar,.topbar.pv{display:flex}
 .topbar:has(.tb-c){display:grid;grid-template-columns:1fr auto 1fr}
 body:not(.has-top) .topbar:not(.pv){display:none}
 .tb-c{min-width:0;max-width:100%;text-align:center;display:flex;justify-content:center}
-.topbar:has(.tb-c) .tb-r{justify-content:flex-end}.tbtx{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.topbar:has(.tb-c) .tb-r{justify-content:flex-end}.tbtx{white-space:pre;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .sndbtn{position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;width:46px;height:46px;border-radius:50%;border:2px solid var(--bd);background:var(--b);font-size:20px;box-shadow:0 4px 14px rgba(0,0,0,.12);cursor:pointer}
 body.admin .sndbtn{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 .mqgrid>*,.bmgrid>*,.sndgrid>*{min-width:0}.mqgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -747,6 +747,11 @@ function applyVars(){
   const mq=document.querySelector('.marq');mq.className='marq'+(X.marqStyle?' ms'+X.marqStyle:'');b.toggle('mq-box',!!(X.marqStyle&&X.on&&X.marq));
   sndBtn();b.toggle('has-top',!!db.top.on);r.setProperty('--tbimg',(db.top.size||28)+'px');$('topbar').innerHTML=tbHTML(db.top);
 }
+const MQPX=[8,12,17,23,30,40,52,66,84,110];
+const mqDur=(el,sp)=>{const w=el.getBoundingClientRect().width||el.scrollWidth;if(w)el.style.animationDuration=(w/MQPX[(sp||6)-1]).toFixed(1)+'s'};
+function fitMarq(){mqDur(document.querySelector('.marq .track'),db.fx.marqSpeed??6)}
+addEventListener('resize',()=>requestAnimationFrame(fitMarq));
+function fitMqPrev(){const sp=+$('sMqSp').value||6;document.querySelectorAll('#sMqSt .mqp>span').forEach(e=>mqDur(e,sp))}
 const BMO=[['none','ไม่ขยับ'],['zoom','ซูมช้า ๆ'],['pan','เลื่อนซ้าย-ขวา'],['float','ลอยขึ้นลง'],['sway','โยกเบา ๆ'],['pulse','เต้นตุบ ๆ']];
 const MQS=['แถบเต็ม','แคปซูลมน','เส้นประ','ริบบิ้น','แก้วใส','ลายจุด','ขอบคู่','ลายทาง','หัวใจสองข้าง','ป๊อปเรโทร'];
 const IC_WIFI='<svg class="tbic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M2 9a15 15 0 0 1 20 0M5.5 12.5a10 10 0 0 1 13 0M9 16a5 5 0 0 1 6 0"/><circle cx="12" cy="19.5" r="1.3" fill="currentColor" stroke="none"/></svg>';
@@ -765,7 +770,7 @@ function render(){
   const bn=$('banner');if(S.banner){bn.style.backgroundImage=`url(${S.banner})`;bn.style.backgroundSize='cover'}else{bn.style.backgroundImage='';bn.style.backgroundSize=''}
   const av=$('avatar');av.style.backgroundImage=S.avatar?`url(${S.avatar})`:'';av.textContent=S.avatar?'':'🌸';
   $('mq1').textContent=db.fx.marqText;$('mq2').textContent=db.fx.marqText;
-  document.querySelector('.marq .track').style.animationDuration=(34-(db.fx.marqSpeed??6)*3)+'s';
+  requestAnimationFrame(fitMarq);
   document.title=S.name;if(S.avatar){$('fav').href=S.avatar;$('favA').href=S.avatar}
   const L=$('links');
   L.className='links'+(db.theme.cols==1?' one':'')+(playEnter&&db.fx.on&&db.fx.enter?' enter':'');playEnter=false;
@@ -1101,7 +1106,7 @@ $('fShop').onsubmit=async e=>{e.preventDefault();const S=db.shop;
   const p=$('sPin').value.trim();if(p)db.pin=p;
   db.fx.marqSpeed=+$('sMqSp').value;db.fx.marqStyle=mqSt;
   db.fx.sound=$('sSndOn').checked;Object.assign(db.snd,{type:sndDraft,vol:+$('sSndV').value/10,btn:$('sSndBtn').checked});
-  Object.assign(db.top,{pos:tbDraft.pos||'left',text:$('sTbTx').value.trim(),on:$('sTbOn').checked,clock:$('sTbClock').checked,icons:$('sTbIcons').checked,em:$('sTbEm').value.trim(),size:+$('sTbSz').value,img:tbDraft.img});
+  Object.assign(db.top,{pos:tbDraft.pos||'left',text:$('sTbTx').value.trimEnd(),on:$('sTbOn').checked,clock:$('sTbClock').checked,icons:$('sTbIcons').checked,em:$('sTbEm').value.trim(),size:+$('sTbSz').value,img:tbDraft.img});
   db.bnr={...bnDraft,card:$('sBnCard').checked};if(db.bnr.motion!=='none')db.fx.zoom=true;  db.fx.marq=$('sMqOn').checked;db.fx.marqText=$('sMq').value.trim()||db.fx.marqText;
   const ra=$('sRingA').value.toUpperCase(),rb=$('sRingB').value.toUpperCase(),R=db.theme.c.ring;
   R.a=ra;R.b=rb;R.t=ra===rb?'solid':'grad';if(R.deg==null)R.deg=135;
@@ -1123,7 +1128,7 @@ function renderSnd(){$('sSnd').innerHTML=SNDS.map(([k,n])=>`<button type="button
 $('sSnd').onclick=e=>{const b=e.target.closest('[data-snd]');if(!b)return;sndDraft=b.dataset.snd;const v=db.snd.vol;db.snd.vol=+$('sSndV').value/10;playSnd(sndDraft,true);db.snd.vol=v;renderSnd()};
 $('sSndV').oninput=e=>{$('sSndVV').textContent=e.target.value;const v=db.snd.vol;db.snd.vol=+e.target.value/10;playSnd(sndDraft,true);db.snd.vol=v};
 $('sndBtn').onclick=()=>{try{localStorage.setItem('snd-mute',sndMuted()?'0':'1')}catch(e){}sndBtn();if(!sndMuted())playSnd()};
-function tbPrev(){const d={...tbDraft,clock:$('sTbClock').checked,icons:$('sTbIcons').checked,em:$('sTbEm').value.trim(),text:$('sTbTx').value.trim()};d.pos=tbDraft.pos||'left';
+function tbPrev(){const d={...tbDraft,clock:$('sTbClock').checked,icons:$('sTbIcons').checked,em:$('sTbEm').value.trim(),text:$('sTbTx').value.trimEnd()};d.pos=tbDraft.pos||'left';
   $('sTbPrev').style.setProperty('--tbimg',$('sTbSz').value+'px');$('sTbPrev').innerHTML=tbHTML(d);$('sTbSzV').textContent=$('sTbSz').value+' px'}
 ['sTbClock','sTbIcons','sTbEm','sTbSz','sTbTx'].forEach(i=>$(i).addEventListener('input',tbPrev));
 $('sTbImg').onchange=e=>{const f=e.target.files[0];if(!f)return;tbDraft.img=URL.createObjectURL(f);tbPrev()};
@@ -1134,8 +1139,9 @@ function renderBnMo(){const bg=db.shop.banner?`url(${db.shop.banner})`:'';
 $('sBnMo').onclick=e=>{const b=e.target.closest('[data-v]');if(!b)return;bnDraft.motion=b.dataset.v;renderBnMo()};
 $('sBnAr').onclick=e=>{const b=e.target.closest('[data-v]');if(!b)return;bnDraft.ar=+b.dataset.v;pressSeg($('sBnAr'),b.dataset.v)};
 function renderMqSt(){const t=esc($('sMq').value||db.fx.marqText||'ประกาศ');
-  $('sMqSt').innerHTML=MQS.map((n,i)=>`<button type="button" data-v="${i}" aria-pressed="${mqSt===i}"><span class="mqp${i?' ms'+i:''}"><span>${t}</span></span>${n}</button>`).join('')}
+  setTimeout(fitMqPrev,0);$('sMqSt').innerHTML=MQS.map((n,i)=>`<button type="button" data-v="${i}" aria-pressed="${mqSt===i}"><span class="mqp${i?' ms'+i:''}"><span>${t}</span></span>${n}</button>`).join('')}
 $('sMqSt').onclick=e=>{const b=e.target.closest('[data-v]');if(!b)return;mqSt=+b.dataset.v;renderMqSt()};
+$('sMq').addEventListener('input',()=>renderMqSt());
 let rSlot='sRingA',rTab='named';
 function renderRPal(){pressSeg($('sRTabs'),rTab);const P=$('sRPal');
   if(rTab==='named'){P.className='rpal pal';P.innerHTML=NAMED.map(c=>`<button type="button" class="it" data-hex="${c.h}"><b style="background:${c.h}"></b>${esc(c.n)}<br>${c.h}</button>`).join('')}
@@ -1147,7 +1153,7 @@ $('sRPal').onclick=e=>{const b=e.target.closest('button');if(!b)return;
   if(b.dataset.grad!=null){const[a,c]=GRADS[+b.dataset.grad];$('sRingA').value=a.toLowerCase();$('sRingB').value=c.toLowerCase()}
   else $(rSlot).value=b.dataset.hex.toLowerCase();ringPrev()};
 $('sRSame').onclick=()=>{$('sRingB').value=$('sRingA').value;ringPrev()};
-$('sMqSp').oninput=e=>$('sMqV').textContent=e.target.value;
+$('sMqSp').oninput=e=>{$('sMqV').textContent=e.target.value;fitMqPrev()};
 $('pinEye').onclick=()=>{const i=$('pin');const show=i.type==='password';i.type=show?'text':'password';$('pinEye').textContent=show?'🙈':'👁️';i.focus()};
 $('sClear').onclick=()=>{if(!confirm('ลบแบนเนอร์และรูปโปรไฟล์?'))return;db.shop.banner='';db.shop.avatar='';save();render()};
 
