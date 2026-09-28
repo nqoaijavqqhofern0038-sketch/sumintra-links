@@ -73,7 +73,11 @@ body.has-top .topbar,.topbar.pv{display:flex}
 .tb-l,.tb-r{display:flex;align-items:center;gap:8px}
 .tb-img{height:var(--tbimg,28px);width:auto;max-width:140px;object-fit:contain;border-radius:8px}
 .tbic{width:20px;height:20px;flex:none}
-.tb-l{min-width:0;flex:1}.tbtx{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.tb-l{min-width:0;flex:1}
+.topbar:has(.tb-c){display:grid;grid-template-columns:1fr auto 1fr}
+body:not(.has-top) .topbar:not(.pv){display:none}
+.tb-c{min-width:0;max-width:100%;text-align:center;display:flex;justify-content:center}
+.topbar:has(.tb-c) .tb-r{justify-content:flex-end}.tbtx{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .sndbtn{position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;width:46px;height:46px;border-radius:50%;border:2px solid var(--bd);background:var(--b);font-size:20px;box-shadow:0 4px 14px rgba(0,0,0,.12);cursor:pointer}
 body.admin .sndbtn{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 .mqgrid>*,.bmgrid>*,.sndgrid>*{min-width:0}.mqgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -533,6 +537,8 @@ input[type=range]{width:100%;accent-color:var(--pa)}
       <label class="chk"><input type="checkbox" id="sTbIcons"> แสดงไอคอน wifi / แบต</label>
       <label class="l">สัญลักษณ์หน้าเวลา<input class="f" id="sTbEm" maxlength="4" placeholder="💗"></label>
       <label class="l">ข้อความในแถบ (เขียนเองได้)<input class="f" id="sTbTx" maxlength="40" placeholder="เช่น welcome ♡ ร้านเปิดแล้วน้า"></label>
+      <div class="muted">ตำแหน่งข้อความ</div>
+      <div class="seg" id="sTbPos"><button type="button" data-v="left">ต่อจากเวลา</button><button type="button" data-v="center">ตรงกลาง</button></div>
       <label class="l">รูปของเราเอง (ขวาบน) · GIF ขยับได้<input class="f" type="file" accept="image/*" id="sTbImg"></label>
       <label class="l">ขนาดรูป <span id="sTbSzV"></span><input type="range" id="sTbSz" min="16" max="64" step="2"></label>
       <button type="button" class="btn ghost" id="sTbRm">ลบรูปแถบด้านบน</button>
@@ -746,7 +752,8 @@ const MQS=['แถบเต็ม','แคปซูลมน','เส้นป�
 const IC_WIFI='<svg class="tbic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M2 9a15 15 0 0 1 20 0M5.5 12.5a10 10 0 0 1 13 0M9 16a5 5 0 0 1 6 0"/><circle cx="12" cy="19.5" r="1.3" fill="currentColor" stroke="none"/></svg>';
 const IC_BAT='<svg class="tbic" viewBox="0 0 26 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="19" height="12" rx="3.5"/><rect x="5" y="9" width="13" height="6" rx="1.5" fill="currentColor" stroke="none"/><path d="M23.5 10v4" stroke-linecap="round"/></svg>';
 const nowHM=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
-function tbHTML(T){return`<span class="tb-l">${T.em?`<span>${esc(T.em)}</span>`:''}${T.clock?`<span class="tbclk">${nowHM()}</span>`:''}${T.text?`<span class="tbtx">${esc(T.text)}</span>`:''}</span><span class="tb-r">${T.img?`<img class="tb-img" src="${esc(T.img)}" alt="">`:''}${T.icons?IC_WIFI+IC_BAT:''}</span>`}
+function tbHTML(T){const c=T.pos==='center',tx=T.text?`<span class="tbtx">${esc(T.text)}</span>`:'';
+  return`<span class="tb-l">${T.em?`<span>${esc(T.em)}</span>`:''}${T.clock?`<span class="tbclk">${nowHM()}</span>`:''}${c?'':tx}</span>${c?`<span class="tb-c">${tx}</span>`:''}<span class="tb-r">${T.img?`<img class="tb-img" src="${esc(T.img)}" alt="">`:''}${T.icons?IC_WIFI+IC_BAT:''}</span>`}
 setInterval(()=>document.querySelectorAll('.tbclk').forEach(e=>e.textContent=nowHM()),20000);
 function linkHtml(l,i){
   const f=l.frame||db.theme.frame,href=fixUrl(l.url);
@@ -1080,7 +1087,7 @@ async function uploadImg(file,max){
 }
 $('bShop').onclick=()=>{const S=db.shop;$('sName').value=S.name;$('sTag').value=S.tag;$('sDesc').value=S.desc;$('sFoot').value=S.foot||'';
   $('sMqOn').checked=!!db.fx.marq;$('sMq').value=db.fx.marqText||'';$('sMqSp').value=db.fx.marqSpeed??6;$('sMqV').textContent=$('sMqSp').value;
-  const T=db.top;tbDraft={...T};$('sTbOn').checked=!!T.on;$('sTbClock').checked=!!T.clock;$('sTbIcons').checked=!!T.icons;$('sTbEm').value=T.em||'';$('sTbTx').value=T.text||'';
+  const T=db.top;tbDraft={...T};$('sTbOn').checked=!!T.on;$('sTbClock').checked=!!T.clock;$('sTbIcons').checked=!!T.icons;$('sTbEm').value=T.em||'';$('sTbTx').value=T.text||'';pressSeg($('sTbPos'),T.pos||'left');
   sndDraft=db.snd.type;$('sSndOn').checked=!!db.fx.sound;$('sSndV').value=Math.round((db.snd.vol??.7)*10);$('sSndVV').textContent=$('sSndV').value;$('sSndBtn').checked=!!db.snd.btn;renderSnd();
   $('sTbSz').value=T.size||28;$('sTbImg').value='';tbPrev();
   bnDraft={...db.bnr};$('sBnCard').checked=!!bnDraft.card;pressSeg($('sBnAr'),String(bnDraft.ar));renderBnMo();
@@ -1094,7 +1101,7 @@ $('fShop').onsubmit=async e=>{e.preventDefault();const S=db.shop;
   const p=$('sPin').value.trim();if(p)db.pin=p;
   db.fx.marqSpeed=+$('sMqSp').value;db.fx.marqStyle=mqSt;
   db.fx.sound=$('sSndOn').checked;Object.assign(db.snd,{type:sndDraft,vol:+$('sSndV').value/10,btn:$('sSndBtn').checked});
-  Object.assign(db.top,{text:$('sTbTx').value.trim(),on:$('sTbOn').checked,clock:$('sTbClock').checked,icons:$('sTbIcons').checked,em:$('sTbEm').value.trim(),size:+$('sTbSz').value,img:tbDraft.img});
+  Object.assign(db.top,{pos:tbDraft.pos||'left',text:$('sTbTx').value.trim(),on:$('sTbOn').checked,clock:$('sTbClock').checked,icons:$('sTbIcons').checked,em:$('sTbEm').value.trim(),size:+$('sTbSz').value,img:tbDraft.img});
   db.bnr={...bnDraft,card:$('sBnCard').checked};if(db.bnr.motion!=='none')db.fx.zoom=true;  db.fx.marq=$('sMqOn').checked;db.fx.marqText=$('sMq').value.trim()||db.fx.marqText;
   const ra=$('sRingA').value.toUpperCase(),rb=$('sRingB').value.toUpperCase(),R=db.theme.c.ring;
   R.a=ra;R.b=rb;R.t=ra===rb?'solid':'grad';if(R.deg==null)R.deg=135;
@@ -1116,10 +1123,11 @@ function renderSnd(){$('sSnd').innerHTML=SNDS.map(([k,n])=>`<button type="button
 $('sSnd').onclick=e=>{const b=e.target.closest('[data-snd]');if(!b)return;sndDraft=b.dataset.snd;const v=db.snd.vol;db.snd.vol=+$('sSndV').value/10;playSnd(sndDraft,true);db.snd.vol=v;renderSnd()};
 $('sSndV').oninput=e=>{$('sSndVV').textContent=e.target.value;const v=db.snd.vol;db.snd.vol=+e.target.value/10;playSnd(sndDraft,true);db.snd.vol=v};
 $('sndBtn').onclick=()=>{try{localStorage.setItem('snd-mute',sndMuted()?'0':'1')}catch(e){}sndBtn();if(!sndMuted())playSnd()};
-function tbPrev(){const d={...tbDraft,clock:$('sTbClock').checked,icons:$('sTbIcons').checked,em:$('sTbEm').value.trim(),text:$('sTbTx').value.trim()};
+function tbPrev(){const d={...tbDraft,clock:$('sTbClock').checked,icons:$('sTbIcons').checked,em:$('sTbEm').value.trim(),text:$('sTbTx').value.trim()};d.pos=tbDraft.pos||'left';
   $('sTbPrev').style.setProperty('--tbimg',$('sTbSz').value+'px');$('sTbPrev').innerHTML=tbHTML(d);$('sTbSzV').textContent=$('sTbSz').value+' px'}
 ['sTbClock','sTbIcons','sTbEm','sTbSz','sTbTx'].forEach(i=>$(i).addEventListener('input',tbPrev));
 $('sTbImg').onchange=e=>{const f=e.target.files[0];if(!f)return;tbDraft.img=URL.createObjectURL(f);tbPrev()};
+$('sTbPos').onclick=e=>{const b=e.target.closest('[data-v]');if(!b)return;tbDraft.pos=b.dataset.v;pressSeg($('sTbPos'),b.dataset.v);tbPrev()};
 $('sTbRm').onclick=()=>{tbDraft.img='';$('sTbImg').value='';tbPrev()};
 function renderBnMo(){const bg=db.shop.banner?`url(${db.shop.banner})`:'';
   $('sBnMo').innerHTML=BMO.map(([m,n])=>`<button type="button" data-v="${m}" aria-pressed="${bnDraft.motion===m}"><span class="bmp ${m}"><i${bg?` style="background-image:${bg}"`:''}></i></span>${n}</button>`).join('')}
