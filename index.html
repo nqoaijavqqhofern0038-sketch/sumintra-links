@@ -636,7 +636,7 @@ function linkHtml(l,i){
 function render(){
   applyVars();const S=db.shop;
   $('name').textContent=S.name;$('desc').textContent=S.desc;$('foot').textContent=S.foot||'';
-  $('banner').style.backgroundImage=S.banner?`url(${S.banner})`:'';
+  const bn=$('banner');if(S.banner){bn.style.backgroundImage=`url(${S.banner})`;bn.style.backgroundSize='cover'}else{bn.style.backgroundImage='';bn.style.backgroundSize=''}
   const av=$('avatar');av.style.backgroundImage=S.avatar?`url(${S.avatar})`:'';av.textContent=S.avatar?'':'🌸';
   $('mq1').textContent=db.fx.marqText;$('mq2').textContent=db.fx.marqText;
   document.title=S.name;
