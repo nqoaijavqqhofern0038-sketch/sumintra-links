@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ลิงก์ร้าน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sriracha&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Charmonman:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kodchasan:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=K2D:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chonburi&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Athiti:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Niramit:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fahkwang:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Thasadith:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Srisakdi:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Trirong:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script>
+/* ===================== ตั้งค่าตรงนี้ ===================== */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDGyOYgNIvEDAxwVEorqEgeWiN4BkU6-sI",
+  authDomain: "sumintra-links.firebaseapp.com",
+  projectId: "sumintra-links",
+  storageBucket: "sumintra-links.firebasestorage.app",
+  messagingSenderId: "999840726212",
+  appId: "1:999840726212:web:6e3eecb1920a8ec94d1d91"
+};
+const IMGBB_KEY = "76ef139d3f17b87132caf973740e9345";   // คีย์จาก api.imgbb.com สำหรับอัปโหลดรูป
+const ADMIN_EMAIL = "nqoaijavqqhofern0036@gmail.com";   // ใช้เบื้องหลังเท่านั้น ไม่ต้องพิมพ์ตอนล็อกอิน
+/* ========================================================= */
+</script>
+<style>
+:root{
+  --panel:#FFFFFF;--pt:#2B2530;--pm:#7A6F78;--line:#E9DFE5;--pa:#D33679;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--panel:#231E24;--pt:#F3ECF1;--pm:#B3A7B0;--line:#40353E;--pa:#FF77C1}}
+:root[data-theme="dark"]{--panel:#231E24;--pt:#F3ECF1;--pm:#B3A7B0;--line:#40353E;--pa:#FF77C1}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--b,#FFF0F6)}
+body{margin:0;background:transparent;color:var(--bt);font-family:'Mali',system-ui,sans-serif;line-height:1.5;min-height:100vh;overflow-x:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--pa);outline-offset:2px}
+.bgl{position:fixed;inset:0;z-index:-1;background:var(--bgimg);background-size:200% 200%}
+body.fx-bg .bgl{animation:bgmove 12s ease-in-out infinite alternate}
+@keyframes bgmove{from{background-position:0% 0%}to{background-position:100% 100%}}
+.wrap{max-width:560px;margin:0 auto;padding:0 18px 120px;position:relative}
+
+/* banner + marquee */
+.banner{max-width:560px;margin:0 auto;aspect-ratio:2.6/1;overflow:hidden;position:relative}
+.bimg{width:100%;height:100%;background:center/cover no-repeat;background-image:radial-gradient(rgba(255,255,255,.6) 2px,transparent 2.6px),var(--bnr);background-size:18px 18px,cover}
+body.fx-zoom .bimg{animation:kb 16s ease-in-out infinite alternate}
+@keyframes kb{to{transform:scale(1.13) translate(-2%,-2%)}}
+.marq{display:none;overflow:hidden;background:var(--mqbg);color:var(--mqt);font-family:var(--f-mq);font-size:14.5px;padding:7px 0;max-width:560px;margin:0 auto}
+body.fx-marq .marq{display:block}
+.marq .track{display:inline-flex;gap:60px;white-space:nowrap;padding-left:100%;animation:marq 16s linear infinite}
+@keyframes marq{to{transform:translateX(-100%)}}
+
+/* header */
+.head{display:flex;gap:14px;align-items:flex-end;margin-top:-50px;position:relative;z-index:2}
+.avwrap{position:relative;width:116px;height:116px;flex:none;border-radius:50%;padding:var(--ringw,5px);-webkit-tap-highlight-color:transparent}
+.avwrap::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--ring)}
+body.fx-ring .avwrap::before{animation:spin 5s linear infinite}
+@keyframes spin{to{rotate:360deg}}
+.avatar{position:relative;width:100%;height:100%;border-radius:50%;border:3px solid var(--avin);background:var(--b) center/cover no-repeat;display:grid;place-items:center;font-size:46px;user-select:none}
+body.fx-avatar .avwrap{animation:bounce 2.6s ease-in-out infinite}
+@keyframes bounce{0%,100%{translate:0 0}50%{translate:0 -6px}}
+.name{margin:0;padding-bottom:6px;font-family:var(--f-name);font-size:var(--name-size);font-weight:700;line-height:1.15;overflow-wrap:anywhere;
+  background:var(--nm);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
+body.fx-name .name{animation:nameShift 4s linear infinite}
+@keyframes nameShift{to{background-position:200% 0}}
+.tag{margin:8px 0 0;color:var(--tagc);font-family:var(--f-tag);font-size:16px;min-height:1.5em}
+.tag.caret::after{content:"|";margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.desc{margin:6px 0 0;color:var(--descc);font-family:var(--f-desc);font-size:15px;white-space:pre-line;opacity:.9}
+
+/* links */
+.links{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px}
+.links.one{grid-template-columns:1fr}
+.links .full{grid-column:1/-1}
+.lk{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;min-height:66px;padding:12px 14px;border-radius:24px;
+  font-family:var(--f-btn);font-weight:700;font-size:17px;text-decoration:none;color:var(--bt);background:var(--btnbg);text-align:center;line-height:1.25;
+  transition:transform .12s ease;-webkit-tap-highlight-color:transparent;overflow-wrap:anywhere}
+.lk:active{transform:scale(.95)}
+.lk .em{font-size:20px}
+.shw{position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none}
+.shw i{position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.6) 50%,transparent 65%);transform:translateX(-130%)}
+body.fx-shine .shw i{animation:shine 3.4s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes shine{55%,100%{transform:translateX(130%)}}
+body.fx-float .lk{animation:bob 3.2s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -5px}}
+.links.enter .lk{animation:popin .6s cubic-bezier(.3,1.6,.5,1) both;animation-delay:var(--d2)}
+body.fx-float .links.enter .lk{animation:popin .6s cubic-bezier(.3,1.6,.5,1) var(--d2) both,bob 3.2s ease-in-out var(--d) infinite}
+@keyframes popin{from{scale:.5;opacity:0}}
+.edit-dot{position:absolute;top:-7px;right:-7px;background:var(--pt);color:var(--panel);border-radius:999px;font-size:11px;padding:2px 8px;display:none;font-weight:600;font-family:'Mali'}
+body.admin .edit-dot{display:block}
+
+/* frames */
+.f1{border:2px solid var(--bd)}
+.f2{border:0;box-shadow:0 7px 18px color-mix(in srgb,var(--bd) 45%,transparent)}
+.f3{border:2.5px dashed var(--bd)}
+.f4{border:0;background:linear-gradient(135deg,var(--b),var(--bd))}
+.f5{background:rgba(255,255,255,.4);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1.5px solid rgba(255,255,255,.85);box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.f6{border:5px double var(--bd)}
+.f7{border:2px solid var(--bd);border-radius:999px}
+.f8{border:2.5px solid var(--bt);border-radius:14px;box-shadow:4px 4px 0 var(--bd)}
+.f9{border:2px solid var(--bd);background:radial-gradient(color-mix(in srgb,var(--bd) 45%,transparent) 2px,transparent 2.6px) 0 0/14px 14px,var(--b)}
+.f10{border:2px solid var(--bd);background:repeating-linear-gradient(45deg,var(--b) 0 10px,color-mix(in srgb,var(--bd) 25%,var(--b)) 10px 20px)}
+.f11{border:2px solid var(--bd)}
+.f11::before,.f11::after{content:"♡";position:absolute;color:var(--bd);font-size:15px;line-height:1}
+.f11::before{top:6px;left:10px}.f11::after{bottom:6px;right:10px}
+.f12{border:2px solid var(--bd);box-shadow:0 0 0 3px color-mix(in srgb,var(--bd) 25%,transparent),0 0 20px color-mix(in srgb,var(--bd) 60%,transparent)}
+.f13{background:#fff;border:1px solid #E6E6E6;border-radius:12px;color:#222}
+.f14{background:var(--bd);color:#fff;border:0}
+.f15{border:3px solid #fff;box-shadow:0 0 0 2px var(--bd),0 5px 0 2px var(--bd)}
+.f16{border:2px solid var(--bd)}
+.f16::after{content:"";position:absolute;top:0;right:0;border-top-right-radius:20px;border-style:solid;border-width:0 26px 26px 0;border-color:transparent var(--bd) transparent transparent}
+.f17{border:2px solid var(--bd);border-radius:6px 26px 6px 26px}
+.f18{border:0;box-shadow:inset 0 -5px 0 color-mix(in srgb,var(--bd) 70%,transparent),0 2px 6px rgba(0,0,0,.06)}
+.f19{border:2px solid var(--bd);box-shadow:0 0 0 5px var(--b),0 0 0 7px var(--bd)}
+.f20{border:2px solid var(--bd)}
+.f20::before{content:"✦";position:absolute;top:-12px;left:50%;transform:translateX(-50%);color:var(--bd);font-size:16px;text-shadow:0 0 4px #fff}
+
+.imgs{display:grid;gap:16px;margin-top:30px}
+.imgs figure{margin:0;position:relative}
+.imgs img{width:100%;display:block;border-radius:20px;box-shadow:0 8px 22px rgba(0,0,0,.08)}
+.imgs .x{position:absolute;top:8px;right:8px;display:none}
+body.admin .imgs .x{display:block}
+.foot{text-align:center;color:var(--footc);font-family:var(--f-foot);font-size:13.5px;margin-top:28px}
+
+ /* fx canvas */
+#fxc,#fxb{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+#fxc{z-index:30}#fxb{z-index:0}
+body.fx-over #fxb{z-index:29}
+.banner,.marq{position:relative;z-index:1}
+.wrap{z-index:1}
+
+/* fx dialog: particle cards */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pcard{border:1.5px solid var(--line);background:transparent;border-radius:14px;padding:5px 5px 6px;font-size:12.5px;color:var(--pt)}
+.pcard canvas{display:block;width:100%;height:74px;border-radius:10px;background:var(--bgimg);margin-bottom:4px}
+.pcard[aria-pressed="true"]{border-color:var(--pa);box-shadow:0 0 0 2px var(--pa) inset}
+.pcard[aria-pressed="true"] span::before{content:"✓ ";color:var(--pa);font-weight:700}
+.slots{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.slot{width:40px;height:36px;border-radius:10px;border:2px solid var(--line);position:relative;padding:0}
+.slot .rm{position:absolute;top:-7px;right:-7px;width:18px;height:18px;border-radius:50%;background:var(--pt);color:var(--panel);font-size:11px;line-height:18px;display:none}
+.slot[aria-pressed="true"] .rm{display:block}
+.addslot{width:40px;height:36px;border-radius:10px;border:2px dashed var(--line);background:transparent;font-size:18px;color:var(--pm)}
+.slot[aria-pressed="true"]{border-color:var(--pa);box-shadow:0 0 0 2px var(--pa)}
+.qsw{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:8px}
+.qsw button{aspect-ratio:1;border-radius:50%;border:1px solid rgba(0,0,0,.15);padding:0}
+
+/* fx dialog: live demos */
+.sw-row .demo{width:66px;height:46px;border-radius:10px;background:var(--bgimg);position:relative;overflow:hidden;flex:none}
+.sw-row .txt{flex:1}
+.demo .st{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px;background:var(--bd);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);animation:dburst 1.6s ease-out infinite}
+@keyframes dburst{0%{transform:rotate(var(--a)) translateY(0) scale(.4);opacity:1}70%{opacity:1}100%{transform:rotate(var(--a)) translateY(-20px) scale(1.1);opacity:0}}
+.demo .cf{position:absolute;left:50%;top:40%;width:5px;height:8px;border-radius:1px;animation:dconf 1.8s ease-out infinite}
+@keyframes dconf{0%{transform:translate(0,0) rotate(0);opacity:1}100%{transform:translate(var(--x),26px) rotate(400deg);opacity:0}}
+.demo .ring2{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px;border-radius:50%;border:2px solid var(--bd);animation:dwave 1.4s ease-out infinite}
+@keyframes dwave{from{transform:scale(.4);opacity:1}to{transform:scale(2.6);opacity:0}}
+.demo .note{position:absolute;inset:0;display:grid;place-items:center;font-size:16px;color:var(--bt)}
+.demo .pill{position:absolute;left:12px;right:12px;height:12px;border-radius:99px;background:var(--btnbg);border:1.5px solid var(--bd);overflow:hidden}
+.demo.enter .pill{animation:dpop 2.4s cubic-bezier(.3,1.6,.5,1) infinite both}
+@keyframes dpop{0%,8%{scale:.3;opacity:0}25%,90%{scale:1;opacity:1}100%{opacity:0}}
+.demo.float .pill{top:17px;animation:bob 1.6s ease-in-out infinite}
+.demo.shine .pill{top:15px;height:16px}
+.demo.shine .pill i{position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.9) 50%,transparent 70%);animation:shine 1.8s ease-in-out infinite}
+.demo .circ{position:absolute;left:50%;top:50%;width:30px;height:30px;margin:-15px;border-radius:50%;padding:3px}
+.demo .circ::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--ring)}
+.demo .circ::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--b)}
+.demo.ring .circ::before{animation:spin 1.8s linear infinite}
+.demo.avatar .circ{animation:bounce 1.2s ease-in-out infinite}
+.demo .gtxt{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-name);font-size:20px;font-weight:700;background:var(--nm);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:nameShift 2s linear infinite}
+.demo .typ{position:absolute;left:8px;top:14px;font-size:13px;color:var(--tagc);white-space:nowrap;overflow:hidden;border-right:2px solid var(--tagc);width:0;animation:dtype 2.6s steps(6) infinite}
+@keyframes dtype{60%,100%{width:44px}}
+.demo .mstrip{position:absolute;left:0;right:0;top:15px;height:16px;background:var(--mqbg);color:var(--mqt);font-size:11px;white-space:nowrap;overflow:hidden}
+.demo .mstrip span{display:inline-block;padding-left:100%;animation:marq 3s linear infinite}
+.demo.zoom .zim{position:absolute;inset:0;background:radial-gradient(rgba(255,255,255,.7) 1.5px,transparent 2px) 0 0/8px 8px,var(--bnr);animation:kb 2.4s ease-in-out infinite alternate}
+.demo.bg{background-size:300% 300%;animation:bgmove 2.2s ease-in-out infinite alternate}
+
+/* info page (หน้าข้อมูล) */
+dialog.info{padding:0;width:min(100vw,560px);max-width:100vw;margin:auto auto 0;border-radius:28px 28px 0 0;background:var(--b);color:var(--bt);max-height:90vh;overflow:hidden;font-family:var(--f-desc)}
+dialog.info[open]{animation:sheetUp .6s cubic-bezier(.2,1.25,.4,1)}
+@keyframes sheetUp{from{transform:translateY(100%)}}
+dialog.info::backdrop{background:rgba(30,15,25,.5);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.isc{overflow:auto;max-height:90vh;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}
+.ihero{position:relative;height:190px;background:var(--bgimg);background-size:cover;background-position:center;overflow:hidden}
+.ihero.hasimg{height:240px}
+.ihero canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.ihero .bigem{position:absolute;inset:0;display:grid;place-items:center;font-size:66px;animation:bob 2.4s ease-in-out infinite}
+.ihero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:50px;background:linear-gradient(transparent,var(--b))}
+.handle{position:absolute;top:9px;left:50%;width:46px;height:5px;border-radius:9px;background:rgba(255,255,255,.85);translate:-50% 0;z-index:2}
+.ix{position:absolute;top:12px;right:12px;z-index:3;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:#333;font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.ibody{padding:4px 22px 6px;display:grid;gap:14px;position:relative}
+.ibody>*{animation:fadeUp .55s cubic-bezier(.2,.9,.3,1) both}
+.ibody>:nth-child(2){animation-delay:.08s}.ibody>:nth-child(3){animation-delay:.16s}
+@keyframes fadeUp{from{opacity:0;translate:0 16px}}
+.ititle{font-family:var(--f-name);font-size:28px;font-weight:700;line-height:1.2;margin:0;background:var(--nm);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
+body.fx-name .ititle{animation:fadeUp .55s both,nameShift 4s linear infinite}
+.itext{white-space:pre-line;color:var(--descc);font-size:15.5px;margin:0;line-height:1.65}
+.igo .lk{min-height:58px}
+.igo .arr{display:inline-block;animation:nudge 1.2s ease-in-out infinite}
+@keyframes nudge{50%{translate:5px 0}}
+
+/* loading */
+body.loading .banner,body.loading .marq,body.loading main{opacity:0}
+.loader{position:fixed;inset:0;display:none;place-items:center;z-index:50}
+body.loading .loader{display:grid}
+.loader i{width:34px;height:34px;border-radius:50%;border:3px solid rgba(0,0,0,.08);border-top-color:var(--pa);animation:spin 1s linear infinite}
+.banner,.marq,main{transition:opacity .4s}
+
+/* admin bar */
+.abar{position:fixed;left:0;right:0;bottom:0;display:none;gap:6px;overflow-x:auto;padding:10px 10px calc(10px + env(safe-area-inset-bottom,0px));
+  background:var(--panel);border-top:1px solid var(--line);z-index:40;font-family:'Mali'}
+body.admin:not(.trying) .abar{display:flex}
+.btn{flex:none;border:0;border-radius:12px;padding:9px 13px;background:var(--pt);color:var(--panel);font-weight:600;font-size:14px;white-space:nowrap}
+.btn.pink{background:var(--pa);color:#fff}
+.btn.ghost{background:transparent;color:var(--pt);border:1.5px solid var(--line)}
+.btn.danger{background:#FCE3E3;color:#B42318}
+.btn.sm{padding:4px 10px;font-size:13px}
+.trybar{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:none;gap:6px;background:var(--panel);color:var(--pt);
+  padding:8px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.2);z-index:45;font-family:'Mali';align-items:center;max-width:96vw;flex-wrap:wrap;justify-content:center}
+body.trying .trybar{display:flex}
+.trybar b{font-size:13px;padding:0 6px}
+
+/* dialogs */
+dialog{border:0;border-radius:22px;padding:0;width:min(96vw,500px);background:var(--panel);color:var(--pt);max-height:90vh;font-family:'Mali'}
+dialog::backdrop{background:rgba(40,20,30,.45)}
+.dbody{padding:18px 18px 8px;overflow:auto;max-height:calc(90vh - 70px)}
+dialog h3{margin:0 0 12px;font-size:19px}
+.dfoot{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;padding:12px 18px;border-top:1px solid var(--line);background:var(--panel)}
+.form{display:grid;gap:11px}
+label.l{display:grid;gap:4px;font-size:14px;color:var(--pm)}
+.f{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:9px 11px;background:transparent;color:var(--pt)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;border:1.5px solid var(--line);background:transparent;border-radius:10px;padding:7px 8px;font-size:14px;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--pt);color:var(--panel);border-color:var(--pt)}
+.sec{font-weight:700;font-size:15px;margin:10px 0 6px}
+.muted{color:var(--pm);font-size:13px}
+input[type=color]{width:46px;height:38px;border:1.5px solid var(--line);border-radius:10px;padding:2px;background:transparent;flex:none}
+input[type=range]{width:100%;accent-color:var(--pa)}
+
+/* color dialog */
+.tchips{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+.tchip{flex:none;display:flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:5px 11px 5px 5px;font-size:13.5px}
+.tchip i{width:22px;height:22px;border-radius:50%;border:1px solid rgba(0,0,0,.12)}
+.tchip[aria-pressed="true"]{border-color:var(--pa);box-shadow:0 0 0 2px var(--pa) inset}
+.curbox{border:1.5px solid var(--line);border-radius:16px;padding:12px;display:grid;gap:10px;margin-top:6px}
+.hexrow{display:flex;gap:8px;align-items:center}
+.bigsw{width:46px;height:38px;border-radius:10px;flex:none;border:1px solid rgba(0,0,0,.12)}
+.shades{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+.shades button,.pal button.sw{border:1px solid rgba(0,0,0,.1);border-radius:8px;aspect-ratio:1;padding:0}
+.pal{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.pal.small{grid-template-columns:repeat(6,1fr)}
+.pal .it{border:0;background:none;padding:0;text-align:center;font-size:11px;color:var(--pm);line-height:1.2}
+.pal .it b{display:block;width:100%;aspect-ratio:1.3;border-radius:10px;border:1px solid rgba(0,0,0,.1);margin-bottom:3px}
+.pal.grads{grid-template-columns:repeat(3,1fr)}
+.pal.sets{grid-template-columns:repeat(2,1fr)}
+.setcard{border:1.5px solid var(--line);border-radius:14px;padding:10px;text-align:center;font-size:12.5px;color:var(--pm)}
+.setcard .mini{border-radius:10px;padding:10px 6px;display:grid;gap:6px;margin-bottom:5px}
+.setcard .mini b{font-size:17px;-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Pattaya'}
+.setcard .mini span{display:block;border-radius:10px;padding:5px;font-size:12px;border:1.5px solid}
+
+/* font dialog */
+.fonts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.fo{border:1.5px solid var(--line);background:transparent;border-radius:14px;padding:10px 8px;text-align:center}
+.fo span{display:block;font-size:20px;line-height:1.3;color:var(--pt)}
+.fo small{display:block;font-size:11.5px;color:var(--pm);font-family:'Mali';margin-top:3px}
+.fo[aria-pressed="true"]{border-color:var(--pa);box-shadow:0 0 0 2px var(--pa) inset}
+
+/* fx dialog */
+.sw-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.sw-row div{font-size:14.5px}.sw-row small{display:block;color:var(--pm);font-size:12.5px}
+.tg{appearance:none;-webkit-appearance:none;width:46px;height:28px;border-radius:99px;background:var(--line);position:relative;flex:none;transition:background .2s;cursor:pointer;margin:0}
+.tg::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .2s}
+.tg:checked{background:var(--pa)}.tg:checked::after{left:21px}
+.master{background:color-mix(in srgb,var(--pa) 10%,transparent);border-radius:14px;padding:10px 12px;border:0}
+.fxlist.off{opacity:.4;pointer-events:none}
+
+/* frame picker */
+.frames{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:14px;border-radius:14px;background:var(--bgimg)}
+.fp{border:0;background:none;padding:0;text-align:center;font-size:12px;color:var(--bt)}
+.fp .lk{min-height:46px;font-size:14px;border-radius:18px;pointer-events:none}
+.fp .lk.f7{border-radius:999px}.fp .lk.f8,.fp .lk.f13{border-radius:12px}.fp .lk.f17{border-radius:5px 20px 5px 20px}
+.fp>span:last-child{display:block;margin-top:6px}
+.fp[aria-pressed="true"]{outline:2.5px solid var(--pa);outline-offset:5px;border-radius:14px}
+.previewbox{background:var(--bgimg);border-radius:14px;padding:18px 16px}
+
+.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--pt);color:var(--panel);padding:10px 18px;border-radius:14px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60;max-width:90vw;text-align:center;font-family:'Mali'}
+.toast.show{opacity:1}
+</style>
+</head>
+<body class="loading">
+<div class="loader" aria-label="กำลังโหลด"><i></i></div>
+<div class="bgl" aria-hidden="true"></div>
+<canvas id="fxb" aria-hidden="true"></canvas><canvas id="fxc" aria-hidden="true"></canvas>
+
+<div class="banner"><div class="bimg" id="banner" role="img" aria-label="แบนเนอร์"></div></div>
+<div class="marq" aria-live="off"><div class="track"><span id="mq1"></span><span id="mq2" aria-hidden="true"></span></div></div>
+<main class="wrap">
+  <div class="head">
+    <div class="avwrap" id="avtap"><div class="avatar" id="avatar" aria-hidden="true">🌸</div></div>
+    <h1 class="name" id="name"></h1>
+  </div>
+  <p class="tag" id="tag"></p>
+  <p class="desc" id="desc"></p>
+  <div class="links" id="links"></div>
+  <div class="imgs" id="imgs"></div>
+  <p class="foot" id="foot"></p>
+</main>
+
+<div class="abar">
+  <button class="btn pink" id="bAdd">+ เพิ่มปุ่ม</button>
+  <button class="btn ghost" data-trial="dColor">🎨 สี</button>
+  <button class="btn ghost" data-trial="dFont">🔤 ฟอนต์</button>
+  <button class="btn ghost" data-trial="dFx">✨ ลูกเล่น</button>
+  <button class="btn ghost" data-trial="dFrame">🖼️ กรอบปุ่ม</button>
+  <button class="btn ghost" id="bShop">ข้อมูลร้าน</button>
+  <button class="btn ghost" id="bOut">ออก</button>
+</div>
+
+<div class="trybar" role="region" aria-label="โหมดทดลอง">
+  <b>👀 กำลังทดลอง</b>
+  <button class="btn ghost sm" id="tBack">กลับไปแก้</button>
+  <button class="btn danger sm" id="tCancel">ยกเลิก</button>
+  <button class="btn pink sm" id="tApply">ใช้จริง</button>
+</div>
+
+<!-- ============ INFO PAGE ============ -->
+<dialog id="dInfo" class="info" aria-labelledby="iTitle">
+  <div class="isc">
+    <div class="ihero" id="iHero"><span class="handle"></span><canvas id="iCv"></canvas><span class="bigem" id="iEm"></span><button class="ix" id="iX" aria-label="ปิด">×</button></div>
+    <div class="ibody"><h2 class="ititle" id="iTitle"></h2><p class="itext" id="iText"></p><div class="igo" id="iGo"></div></div>
+  </div>
+</dialog>
+
+<!-- ============ COLOR ============ -->
+<dialog id="dColor" class="trial">
+  <div class="dbody">
+    <h3>🎨 สี</h3>
+    <div class="muted" style="margin-bottom:8px">1. เลือกส่วนที่จะเปลี่ยนสี  2. แตะสีด้านล่าง</div>
+    <div class="tchips" id="cTargets"></div>
+    <div class="curbox">
+      <div class="seg" id="cMode"><button type="button" data-v="solid">สีเดียว</button><button type="button" data-v="grad">ไล่สี</button></div>
+      <div class="seg" id="cSlot"><button type="button" data-v="a">สีที่ 1</button><button type="button" data-v="b">สีที่ 2</button></div>
+      <label class="l" id="cDegL">ทิศทางไล่สี <input type="range" id="cDeg" min="0" max="360" step="15"></label>
+      <label class="l" id="cRingL">ความหนากรอบโลโก้ <input type="range" id="cRing" min="0" max="14" step="1"></label>
+      <div class="hexrow"><span class="bigsw" id="cSw"></span><input class="f" id="cHex" maxlength="7" placeholder="#FFBBDA" aria-label="โค้ดสี"><input type="color" id="cPick" aria-label="เลือกสีเอง"></div>
+      <div class="muted">เฉดสีของสีนี้ (อ่อน → เข้ม)</div>
+      <div class="shades" id="cShades"></div>
+      <button type="button" class="btn pink" id="cAuto">✨ จับคู่สีทั้งเว็บจากสีนี้อัตโนมัติ</button>
+    </div>
+    <div class="sec">จานสี</div>
+    <div class="seg" id="cTabs">
+      <button type="button" data-v="named">พาสเทล</button><button type="button" data-v="pink">ชมพูสด</button>
+      <button type="button" data-v="grads">ไล่สี</button><button type="button" data-v="sets">ธีมจับคู่</button>
+    </div>
+    <div id="cPal"></div>
+  </div>
+  <div class="dfoot"><button class="btn ghost" data-preview>👀 ดูทั้งหน้า</button><button class="btn danger" data-cancel>ยกเลิก</button><button class="btn pink" data-apply>ใช้จริง</button></div>
+</dialog>
+
+<!-- ============ FONT ============ -->
+<dialog id="dFont" class="trial">
+  <div class="dbody">
+    <h3>🔤 ฟอนต์</h3>
+    <div class="muted" style="margin-bottom:8px">เลือกส่วนที่จะเปลี่ยน แล้วแตะฟอนต์ที่ชอบ</div>
+    <div class="seg" id="fTargets"></div>
+    <label class="l" style="margin-top:10px">ขนาดชื่อร้าน <input type="range" id="fSize" min="20" max="52" step="1"></label>
+    <div class="sec">ฟอนต์ทั้งหมด</div>
+    <div class="fonts" id="fList"></div>
+  </div>
+  <div class="dfoot"><button class="btn ghost" data-preview>👀 ดูทั้งหน้า</button><button class="btn danger" data-cancel>ยกเลิก</button><button class="btn pink" data-apply>ใช้จริง</button></div>
+</dialog>
+
+<!-- ============ FX ============ -->
+<dialog id="dFx" class="trial">
+  <div class="dbody">
+    <h3>✨ ลูกเล่นหน้าเว็บ</h3>
+    <div class="sw-row master"><div><b>เปิดลูกเล่นทั้งหมด</b><small>ปิดตรงนี้ = หน้าเว็บนิ่งทั้งหมด</small></div><input type="checkbox" class="tg" id="xOn" aria-label="เปิดลูกเล่นทั้งหมด"></div>
+    <div class="fxlist" id="xAll">
+      <div class="sw-row"><div class="txt"><b>ประกายลอยทั้งหน้า</b><small>เลือกได้หลายแบบพร้อมกัน แตะการ์ดเพื่อเปิด/ปิด</small></div><input type="checkbox" class="tg" data-x="particles" aria-label="ประกายลอยทั้งหน้า"></div>
+      <div class="pgrid" id="xTypes" style="margin-top:10px"></div>
+      <div class="sec">สีประกาย</div>
+      <div class="muted" style="margin-bottom:6px">แตะช่องสี แล้วเลือกสีด้านล่าง (ใส่ได้สูงสุด 6 สี)</div>
+      <div class="slots"><span id="xSlots" class="slots"></span><input type="color" id="xPick" aria-label="เลือกสีเอง" style="margin-left:auto"></div>
+      <div class="seg" id="xTabs" style="margin-top:10px"><button type="button" data-v="quick">สีแนะนำ</button><button type="button" data-v="named">พาสเทล</button><button type="button" data-v="pink">ชมพูสด</button></div>
+      <div id="xPal"></div>
+      <div class="sw-row" style="margin-top:6px"><div class="txt">ให้ประกายลอยทับแบนเนอร์และปุ่ม<small>ปิด = ประกายอยู่แค่พื้นหลัง ไม่บังแบนเนอร์</small></div><input type="checkbox" class="tg" data-x="over" aria-label="ประกายทับแบนเนอร์"></div>
+      <label class="l" style="margin-top:10px">ความหนาแน่น <input type="range" id="xDensity" min="1" max="5" step="1"></label>
+      <div id="xEmoBox" class="form" style="margin-top:8px">
+        <label class="l">อีโมจิที่ใช้ (แบบอีโมจิ)<input class="f" id="xEmoji" placeholder="💗🌸"></label>
+        <div class="l">ทิศทางอีโมจิ<div class="seg" id="xMode"><button type="button" data-v="up">ลอยขึ้น</button><button type="button" data-v="fall">ร่วงลง</button></div></div>
+      </div>
+      <div class="sec" style="margin-top:16px">ลูกเล่นอื่น ๆ (ดูตัวอย่างในกล่องซ้าย)</div>
+      <div id="xList"></div>
+      <label class="l" style="margin-top:10px">ข้อความประกาศวิ่ง<input class="f" id="xMarq" placeholder="เปิดรับออเดอร์ 10:00-04:00 ✨"></label>
+    </div>
+  </div>
+  <div class="dfoot"><button class="btn ghost" data-preview>👀 ดูทั้งหน้า</button><button class="btn danger" data-cancel>ยกเลิก</button><button class="btn pink" data-apply>ใช้จริง</button></div>
+</dialog>
+
+<!-- ============ FRAME ============ -->
+<dialog id="dFrame" class="trial">
+  <div class="dbody">
+    <h3>🖼️ กรอบปุ่ม</h3>
+    <div class="l" style="margin-bottom:10px">การจัดวาง<div class="seg" id="rCols"><button type="button" data-v="2">2 คอลัมน์</button><button type="button" data-v="1">1 คอลัมน์</button></div></div>
+    <div class="frames" id="rFrames"></div>
+  </div>
+  <div class="dfoot"><button class="btn ghost" data-preview>👀 ดูทั้งหน้า</button><button class="btn danger" data-cancel>ยกเลิก</button><button class="btn pink" data-apply>ใช้จริง</button></div>
+</dialog>
+
+<!-- ============ LINK ============ -->
+<dialog id="dLink">
+  <form id="fLink" method="dialog">
+  <div class="dbody"><div class="form">
+    <h3 id="dLinkTitle" style="margin:0">เพิ่มปุ่ม</h3>
+    <div class="previewbox"><div class="links one" style="margin:0" id="lPrev"></div></div>
+    <label class="l">ข้อความบนปุ่ม<input class="f" id="lLabel" required maxlength="40" placeholder="เช่น รับตัวแทน"></label>
+    <label class="l">ลิงก์ที่จะเด้งไป<input class="f" id="lUrl" inputmode="url" placeholder="เช่น https://line.me/ti/g/..."></label>
+    <div class="l">เมื่อลูกค้ากดปุ่มนี้<div class="seg" id="lMode"><button type="button" data-v="link">ไปลิงก์ทันที</button><button type="button" data-v="info">เปิดหน้าข้อมูลก่อน ✨</button></div></div>
+    <div class="form" id="lInfoBox" style="border:1.5px dashed var(--line);border-radius:14px;padding:12px">
+      <label class="l">รูปหัวหน้าข้อมูล (ไม่ใส่ก็ได้ จะแสดงอีโมจิลอยแทน)<input class="f" type="file" accept="image/*" id="lImg"></label>
+      <button type="button" class="btn ghost sm" id="lImgRm" style="justify-self:start">ลบรูปหัว</button>
+      <label class="l">รายละเอียด<textarea class="f" id="lText" rows="4" placeholder="เช่น สมัครตัวแทนได้ราคาพิเศษ ✨&#10;- ได้ส่วนลดทุกแอป&#10;- มีกลุ่มอัปเดตทุกวัน"></textarea></label>
+      <label class="l">ข้อความบนปุ่มไปลิงก์<input class="f" id="lGo" placeholder="ไปที่ลิงก์"></label>
+      <button type="button" class="btn pink" id="lPrevInfo">👀 ดูตัวอย่างหน้าข้อมูล</button>
+    </div>
+    <div class="row2">
+      <label class="l">อีโมจิ (ไม่ใส่ก็ได้)<input class="f" id="lEmoji" maxlength="4" placeholder="💌"></label>
+      <div class="l">ขนาดปุ่ม<div class="seg" id="lSize"><button type="button" data-v="half">ครึ่ง</button><button type="button" data-v="full">เต็ม</button></div></div>
+    </div>
+    <div class="sec" style="margin:0">กรอบของปุ่มนี้</div>
+    <div class="frames" id="lFrames"></div>
+  </div></div>
+  <div class="dfoot">
+    <button class="btn danger" type="button" id="lDel">ลบ</button>
+    <button class="btn ghost" type="button" id="lUp">↑</button>
+    <button class="btn ghost" type="button" id="lDown">↓</button>
+    <button class="btn ghost" type="button" data-close>ยกเลิก</button>
+    <button class="btn pink" type="submit">บันทึก</button>
+  </div>
+  </form>
+</dialog>
+
+<!-- ============ SHOP ============ -->
+<dialog id="dShop">
+  <form id="fShop" method="dialog">
+  <div class="dbody"><div class="form">
+    <h3 style="margin:0">ข้อมูลร้าน</h3>
+    <label class="l">รูปแบนเนอร์<input class="f" type="file" accept="image/*" id="sBanner"></label>
+    <label class="l">รูปโปรไฟล์<input class="f" type="file" accept="image/*" id="sAvatar"></label>
+    <label class="l">ชื่อร้าน<input class="f" id="sName" required></label>
+    <label class="l">ข้อความใต้ชื่อ<input class="f" id="sTag"></label>
+    <label class="l">คำอธิบาย<textarea class="f" id="sDesc" rows="3"></textarea></label>
+    <label class="l">เพิ่มรูปด้านล่าง (เลือกได้หลายรูป)<input class="f" type="file" accept="image/*" multiple id="sImgs"></label>
+    <label class="l">ข้อความท้ายเว็บ<input class="f" id="sFoot"></label>
+    <label class="l" id="pinRow">เปลี่ยน PIN หลังบ้าน<input class="f" id="sPin" inputmode="numeric" maxlength="8" placeholder="เว้นว่างถ้าไม่เปลี่ยน"></label>
+  </div></div>
+  <div class="dfoot">
+    <button class="btn danger" type="button" id="sClear">ลบแบนเนอร์/รูปโปรไฟล์</button>
+    <button class="btn ghost" type="button" data-close>ยกเลิก</button>
+    <button class="btn pink" type="submit">บันทึก</button>
+  </div>
+  </form>
+</dialog>
+
+<dialog id="dPin">
+  <form id="fPin" method="dialog">
+  <div class="dbody"><div class="form"><h3 style="margin:0">เข้าหลังบ้าน</h3>
+        <input class="f" id="pin" type="password" inputmode="numeric" placeholder="ใส่ PIN" autocomplete="current-password"></div></div>
+  <div class="dfoot"><button class="btn ghost" type="button" data-close>ยกเลิก</button><button class="btn pink" type="submit">เข้าสู่ระบบ</button></div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const KEY='linkpage-v2', OLDKEY='linkpage-v1';
+const REMOTE=!!(FIREBASE_CONFIG&&FIREBASE_CONFIG.apiKey)&&typeof firebase!=='undefined';
+let fs=null,auth=null;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clone=o=>JSON.parse(JSON.stringify(o));
+const graphemes=t=>typeof Intl!=='undefined'&&Intl.Segmenter?[...new Intl.Segmenter('th',{granularity:'grapheme'}).segment(t)].map(s=>s.segment):Array.from(t);
+
+/* ---------- data: palettes ---------- */
+const NAMED=`Baby Blue|E1FEFE,Zumthor|E3EBFD,Blue chalk|E7DCFC,French lilac|E0C7EE,Pink Lace|F8D5F8,Snuff|E0E0F3,Moon Laker|D4D2F2,Purple|DBCDE3,Melanie|E5D0E2,Amour|F5E8F7,Soft cream|FFF5ED,Rose Lips|FAE0D8,Lemon|F0F4BF,Green|DFE1BE,Pink|F1DEEE,Cosmos|FADCDC,Peach cream|FCEEE2,Albescent white|F3EBD2,Cararra|EBECE7,Oyster Bay|E5F9FE,China Ivory|FDFFE4,Rum Sqizzie|F8F2E0,Watusi|FFE2D1,Almond|F3D6CE,Cream|FFF3D7,Mastard|FCEE9E,Flamingo|F6C6C7,Seafoam|92CEA8,Sky|8BD2EC,Astra|FCF6BD,Granny Apple|D0F4DE,Tropical Blue|C0E4F6,Cotton Candy|FFBBDA,Moon Raker|E8CFF8,Light Blue|A8D1E7,Scandal|B3DBD8,Baby purple|F8F5FD,Misty Rose|FEE5E0,Pink|FFBFC5,Light blue|ECF8F8,Egg|EEE4E1,Cream|E7D8C9,Rose|E6BEAE,Sand|B2967D,Purple|B5B1C8,Yellow|F8E8D3,Rose|E8ABB5,Pink|FBCCC2,Brown|695A5B,Cool Grey|CFCAC7,Breathless|DFC2C3,Whitey|E4D5E3,Misty|BFCED6,Spatial white|D9E1E2,White|FFF8F8,Solitair|ECDBC9,Sun down|F898A4,Gossip|ADD495,Padua|80B7A2,Breeze|F6F5F0,Sandstorm|F0E4D7,Soft Kiss|F3D8D1,Rainy Day|CED6D0,Cloud|C7BBBC,Aqua Haze|DADBD6,Mystic|D2DBD6,Martini|B5A3A1,Willow Grove|656C5C,Dark grey|2E3136,Solitude|DEE2EB,Gallery|DDD8D2,Pearl bush|DBCEC5,Lemon Grass|9A9E8D,Ebony|577460,Rose Water|E6C2BF,Dusty Rose|EED6D3,Coffee Pot|928880,Teal Blue|2A505A,Taupe|E3E1DA,Winter Berry|75464A,Rose|AA7C7A,Milk Tea|BEABA7,Cream|E8DBD4,Light Grey|E8E8E9,Stone White|E2E3DE,Fossil Grey|CDC6BC,Beige|E0D9CF,Charcoal|787A79,Deep Brown|464543,Sand|AF9F8C,Grass|7F867B,Matcha|C7C7BB,Dusty Rose|D4C8BE,Linen|E3E4E0,Oxford|293242,Winter sea|9DA2AE,Greyish|A4A3A1,Leather|916848,Blonde|B3A188`
+  .split(',').map(x=>{const[n,h]=x.split('|');return{n,h:'#'+h}});
+const PINKS=`E46C88 F893B5 FFBDCB FFD8D9 9EC3EF F8E4E3 FC89EB FE9DD0 EB78B9 8BD2F0 F6E2E3 E1F1F0 F2E6F2 F7C9C9 FDF8E2 FAEFCF B7CEDE D0E1E8 EBDFE1 DFB9B6 F1DDD6 F2F2F2 E8FFF3 FFF6D7 F2B7B6 FE439D FAA86F FED369 FAC9DB FCF9F6 B86F68 DFA9A9 E59B6F F3C5AF F1ECF0 F0A3A6 F8A9BA F5B3C1 FFBAC7 FDC8D4 ED7A77 ED8383 F4A9A6 FAC9C4 FBD5CC EEA6AA F0ABAE ECB8BA F0B5B9 DDB5B5 E99CAE FD9BB4 F7A3BB F5B5CD FABCCB 8A0021 E40345 DE5B8F FCA4BD FACEE5 F03167 FF779F FEACC3 FDC7D7 FFDAE1 FF008C FF33A1 FF51B0 FF77C1 FFADDA B93292 FA73CE FF9AD3 FFBFC9 EB9CB1 D33679 DD5E95 E586B0 EEAFCA F7D7E4 CE2686 E5269A F450AE FF6EC1 F79ED1`.split(' ').map(h=>'#'+h);
+const GRADS=[['#FFBBDA','#E8CFF8'],['#E1FEFE','#F8D5F8'],['#FCF6BD','#FFBBDA'],['#D0F4DE','#C0E4F6'],['#FFE2D1','#FAC9DB'],['#E3EBFD','#E7DCFC'],
+  ['#8BD2EC','#FFADDA'],['#FDFFE4','#D0F4DE'],['#F898A4','#FCEE9E'],['#E6C2BF','#FFF5ED'],['#B5B1C8','#F5E8F7'],['#FF77C1','#FFBAC7'],
+  ['#92CEA8','#FCF6BD'],['#FFF3D7','#F6C6C7'],['#FE439D','#FED369'],['#E5269A','#FA73CE'],['#2A505A','#80B7A2'],['#293242','#9DA2AE'],
+  ['#8A0021','#F03167'],['#FAA86F','#FED369'],['#9EC3EF','#FC89EB'],['#F3EBD2','#E8DBD4'],['#916848','#B3A188'],['#B93292','#8BD2F0']];
+// name, bgA,bgB, btn, border, text, nameA,nameB
+const SETS=[
+  ['ชมพูหวาน','#FFF0F6','#F8D5F8','#FFF8F8','#F5B5CD','#75464A','#E5269A','#FA73CE'],
+  ['ฟ้าละมุน','#E5F9FE','#E3EBFD','#FFFFFF','#A8D1E7','#2A505A','#3F7FA8','#8BD2EC'],
+  ['ลาเวนเดอร์','#F8F5FD','#E7DCFC','#FFFFFF','#B5B1C8','#3E3552','#7B5BB5','#CE86E0'],
+  ['มินต์ครีม','#E8FFF3','#FFF6D7','#FFFFFF','#92CEA8','#2F4A3A','#577460','#92CEA8'],
+  ['พีชซันเซ็ต','#FFF5ED','#FFE2D1','#FFF8F8','#FAA86F','#6B3A26','#ED7A77','#FAA86F'],
+  ['เลมอนเยลลี่','#FDFFE4','#FCF6BD','#FFFFFF','#FED369','#5A4A1E','#E59B6F','#E0B43A'],
+  ['ยูนิคอร์น','#E1FEFE','#FFBBDA','#FFFFFF','#C9A7F0','#5B3A6E','#FF6EC1','#5FB8E0'],
+  ['มิลค์ที','#F3EBD2','#E8DBD4','#FCF9F6','#BEABA7','#464543','#916848','#B3A188'],
+  ['โรสดัสตี้','#F3D8D1','#EED6D3','#FFF8F8','#AA7C7A','#75464A','#75464A','#AA7C7A'],
+  ['คืนดาว','#293242','#2A505A','#2E3136','#8BD2EC','#ECF8F8','#8BD2F0','#FFADDA'],
+  ['เบอร์รี่','#FACEE5','#FFDAE1','#FFFFFF','#8A0021','#8A0021','#8A0021','#E40345'],
+  ['นีออนพิงก์','#FFADDA','#FF77C1','#FFFFFF','#FF008C','#B93292','#FFFFFF','#FFF6D7'],
+  ['ครีมมิลค์','#FFF8F8','#F6F5F0','#FFFFFF','#E3E1DA','#464543','#787A79','#B2967D'],
+  ['ป่ามัทฉะ','#E2E3DE','#C7C7BB','#F6F5F0','#7F867B','#3A4034','#577460','#9A9E8D'],
+  ['ลูกกวาด','#FDF8E2','#FAC9DB','#FFFFFF','#FF9AD3','#6E2F55','#FF51B0','#FED369'],
+  ['ทะเลเช้า','#ECF8F8','#B3DBD8','#FFFFFF','#80B7A2','#2A505A','#2A505A','#80B7A2']];
+const FONTS=['Pattaya','Sriracha','Charmonman','Charm','Srisakdi','Itim','Mali','Kodchasan','Mitr','Prompt','Kanit','Chonburi','Athiti','Niramit','K2D','Bai Jamjuree','Fahkwang','Thasadith','Trirong','Chakra Petch'];
+const FRAMES=['','ขอบมน','เงานุ่ม','เส้นประ','ไล่สี','แก้วใส','ขอบคู่','แคปซูล','ป๊อปเรโทร','ลายจุด','ลายทาง','หัวใจมุม','เรืองแสง','มินิมอล','สีทึบ','สติกเกอร์','ริบบิ้นมุม','ใบไม้','ปุ่มนูน','กรอบซ้อน','ดาวบน'];
+const TARGETS=[{k:'bg',n:'พื้นหลังเว็บ',g:1},{k:'btn',n:'พื้นปุ่ม',g:1},{k:'border',n:'กรอบปุ่ม'},{k:'btnText',n:'ตัวอักษรปุ่ม'},{k:'name',n:'ชื่อร้าน',g:1},
+  {k:'tag',n:'ข้อความใต้ชื่อ'},{k:'desc',n:'คำอธิบาย'},{k:'ring',n:'กรอบโลโก้ (วงนอก)',g:1},{k:'avIn',n:'ขอบในโลโก้'},{k:'foot',n:'ท้ายเว็บ'},{k:'marqBg',n:'พื้นแถบประกาศ',g:1},{k:'marqText',n:'ตัวอักษรประกาศ'}];
+const FTARGETS=[{k:'all',n:'ทุกส่วน'},{k:'name',n:'ชื่อร้าน'},{k:'tag',n:'ใต้ชื่อ'},{k:'desc',n:'คำอธิบาย'},{k:'btn',n:'ปุ่ม'},{k:'foot',n:'ท้ายเว็บ'},{k:'mq',n:'ประกาศวิ่ง'}];
+const FX=[
+  ['tap','แตะแล้วมีประกาย','แตะตรงไหนก็มีดาววิบวับกระจาย'],
+  ['confetti','กดปุ่มแล้วมีพลุกระดาษ','กระดาษสีระเบิดก่อนเด้งไปลิงก์'],
+  ['sound','เสียงป๊อปตอนกดปุ่ม','เสียงเบา ๆ น่ารัก'],
+  ['enter','ปุ่มเด้งเข้ามาตอนเปิดเว็บ','ป๊อปเข้ามาทีละปุ่ม'],
+  ['float','ปุ่มลอยขึ้นลง','ขยับเบา ๆ เหมือนลอยน้ำ'],
+  ['shine','แสงวิ่งบนปุ่ม','แสงวิ้งผ่านปุ่มเป็นระยะ'],
+  ['ring','กรอบรูปหมุน','วงแหวนไล่สีหมุนรอบรูป'],
+  ['avatar','รูปโปรไฟล์เด้ง','กระดึ๊บขึ้นลง'],
+  ['name','ชื่อร้านสีวิ่ง','ใช้คู่กับชื่อร้านแบบไล่สี'],
+  ['typing','พิมพ์ข้อความทีละตัว','ข้อความใต้ชื่อค่อย ๆ ขึ้น'],
+  ['marq','แถบประกาศวิ่ง','ตัวอักษรวิ่งใต้แบนเนอร์'],
+  ['zoom','แบนเนอร์ซูมช้า ๆ','ขยับเหมือนภาพยนตร์'],
+  ['bg','พื้นหลังไล่สีเคลื่อนไหว','ใช้คู่กับพื้นหลังแบบไล่สี']];
+const PTYPES=[['sparkle','ดาววิบวับ'],['glitter','กากเพชร'],['snow','หิมะ'],['bokeh','แสงโบเก้'],['heart','หัวใจ'],['petal','กลีบดอกไม้'],['shoot','ดาวตก'],['bubble','ฟองสบู่'],['emoji','อีโมจิ']];
+function demoHtml(k){
+  const st=n=>Array.from({length:n},(_,i)=>`<i class="st" style="--a:${i*360/n}deg"></i>`).join('');
+  switch(k){
+    case'tap':return st(6);
+    case'confetti':return['#FF77C1','#FED369','#8BD2EC','#92CEA8','#E8CFF8','#FF51B0'].map((c,i)=>`<i class="cf" style="background:${c};--x:${(i-2.5)*9}px;animation-delay:${i*.05}s"></i>`).join('');
+    case'sound':return'<i class="ring2"></i><i class="ring2" style="animation-delay:.7s"></i><span class="note">♪</span>';
+    case'enter':return[6,18,30].map((t,i)=>`<i class="pill" style="top:${t-2}px;height:9px;animation-delay:${i*.15}s"></i>`).join('');
+    case'float':return'<i class="pill"></i>';
+    case'shine':return'<i class="pill"><i></i></i>';
+    case'ring':case'avatar':return'<i class="circ"></i>';
+    case'name':return'<span class="gtxt">Aa</span>';
+    case'typing':return'<span class="typ">ร้านน่ารัก</span>';
+    case'marq':return'<i class="mstrip"><span>✦ ประกาศ ✦ ประกาศ</span></i>';
+    case'zoom':return'<i class="zim"></i>';
+    default:return'';
+  }
+}
+
+/* ---------- color math ---------- */
+function hex2hsl(h){h=h.replace('#','');let r=parseInt(h.slice(0,2),16)/255,g=parseInt(h.slice(2,4),16)/255,b=parseInt(h.slice(4,6),16)/255;
+  const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let H=0,S=0,L=(mx+mn)/2;
+  if(mx!==mn){const d=mx-mn;S=L>.5?d/(2-mx-mn):d/(mx+mn);H=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;H*=60}
+  return[H,S*100,L*100]}
+function hsl2hex(h,s,l){h=((h%360)+360)%360;s=Math.max(0,Math.min(100,s))/100;l=Math.max(0,Math.min(100,l))/100;
+  const k=n=>(n+h/30)%12,a=s*Math.min(l,1-l),f=n=>l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1)));
+  return'#'+[f(0),f(8),f(4)].map(x=>Math.round(x*255).toString(16).padStart(2,'0')).join('').toUpperCase()}
+const validHex=h=>/^#[0-9a-f]{6}$/i.test(h);
+const G=o=>o.t==='grad'?`linear-gradient(${o.deg??135}deg,${o.a},${o.b})`:o.a;
+const GA=o=>o.t==='grad'?`linear-gradient(90deg,${o.a},${o.b},${o.a})`:o.a;
+const S1=a=>({t:'solid',a,b:a,deg:135}), GR=(a,b,deg=135)=>({t:'grad',a,b,deg});
+
+function setTheme(set){const[,bgA,bgB,btn,bd,tx,nA,nB]=set;
+  return{bg:GR(bgA,bgB,160),btn:S1(btn),border:S1(bd),btnText:S1(tx),name:GR(nA,nB,90),tag:S1(tx),desc:S1(tx),ring:GR(nA,nB,135),avIn:S1(btn),foot:S1(tx),marqBg:GR(nA,nB,90),marqText:S1(nA==='#FFFFFF'?tx:'#FFFFFF')}}
+function autoTheme(hex){const[h,s0]=hex2hsl(hex),s=Math.max(35,Math.min(80,s0));
+  const dark=hsl2hex(h,30,24),nA=hsl2hex(h,68,52),nB=hsl2hex(h+35,68,62);
+  return{bg:GR(hsl2hex(h,s*.7,95),hsl2hex(h+25,s*.7,89),160),btn:S1(hsl2hex(h,60,98)),border:S1(hsl2hex(h,Math.min(s,70),72)),btnText:S1(dark),
+    name:GR(nA,nB,90),tag:S1(hsl2hex(h,25,32)),desc:S1(hsl2hex(h,15,42)),ring:GR(nA,nB,135),avIn:S1('#FFFFFF'),foot:S1(hsl2hex(h,15,42)),marqBg:GR(hsl2hex(h,60,68),hsl2hex(h+35,60,72),90),marqText:S1('#FFFFFF')}}
+
+/* ---------- state ---------- */
+function defaults(){
+  const L=(label,emoji='',full=false)=>({id:Math.random().toString(36).slice(2),label,url:'',emoji,full,frame:0});
+  return{pin:'1234',
+    shop:{name:'ชื่อร้านของคุณ',tag:'✦ เก็บรีวิวใหม่ผ่านทางเว็บไซต์ร้านค้า',desc:'ในกรณีมีปัญหา กดแจ้งปัญหา และรอแอดมินเคลมให้ตามคิวนะคะ ♡',banner:'',avatar:'',imgs:[],foot:'ขอบคุณที่อุดหนุนนะคะ ♡'},
+    theme:{frame:1,cols:2,ringW:5,c:setTheme(SETS[0])},
+    fonts:{name:'Pattaya',tag:'Mali',desc:'Mali',btn:'Mali',foot:'Mali',mq:'Mali',size:32},
+    fx:{on:true,particles:true,tap:true,confetti:true,sound:false,enter:true,float:true,shine:true,ring:true,avatar:true,name:true,typing:true,marq:true,zoom:true,bg:false,
+      emoji:'💗🌸',mode:'up',density:3,ptypes:['sparkle','glitter'],pc:['#FFFFFF','#FFD66B'],marqText:'✨ เปิดรับออเดอร์ทุกวัน 10:00-04:00 ✨ ทักแอดมินได้ตลอด ♡'},
+    links:[L('check credits'),L('review'),L('บริการต่างๆ'),L('เว็บร้านค้า'),L('line oa'),L('แจ้งปัญหา'),Object.assign(L('รับตัวแทน','💌',true),{mode:'info',info:{img:'',go:'เข้ากลุ่มตัวแทน',text:'สมัครตัวแทนกับร้านเราได้ราคาพิเศษ ✨\n\n♡ ส่วนลดทุกแอป\n♡ มีกลุ่มอัปเดตทุกวัน\n♡ แอดมินดูแลใกล้ชิด'}})]};
+}
+function load(){
+  try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&d.theme&&d.theme.c){if(!d.fx.ptypes){d.fx.ptypes=['sparkle','glitter'];d.fx.pc=['#FFFFFF','#FFD66B']}if(!d.theme.c.avIn)d.theme.c.avIn=S1(d.theme.c.btn.a);if(d.theme.ringW==null)d.theme.ringW=5;return d}}catch(e){}
+  const d=defaults();
+  try{const o=JSON.parse(localStorage.getItem(OLDKEY));if(o&&o.links){d.links=o.links;d.pin=o.pin||d.pin;Object.assign(d.shop,o.shop||{})}}catch(e){}
+  return d;
+}
+let db=load();
+function save(){
+  if(REMOTE){const data=clone(db);delete data.pin;
+    fs.doc('sites/main').set(data).catch(e=>toast('บันทึกขึ้นเว็บไม่สำเร็จ ('+(e.code||e.message)+')'));return true}
+  try{localStorage.setItem(KEY,JSON.stringify(db));return true}catch(e){toast('พื้นที่เก็บรูปเต็ม ลองใช้รูปน้อยลงหรือเล็กลงนะคะ');return false}}
+function normalize(d){const D=defaults();d=d||{};
+  const c={...D.theme.c,...((d.theme||{}).c||{})};
+  return{...D,...d,shop:{...D.shop,...(d.shop||{})},fonts:{...D.fonts,...(d.fonts||{})},fx:{...D.fx,...(d.fx||{})},
+    theme:{...D.theme,...(d.theme||{}),c},links:Array.isArray(d.links)?d.links:D.links}}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200)}
+const isAdmin=()=>document.body.classList.contains('admin');
+const fixUrl=u=>{u=(u||'').trim();if(!u)return'';return/^(https?:|mailto:|tel:|line:)/i.test(u)?u:'https://'+u};
+const ff=f=>`'${f}',system-ui,sans-serif`;
+
+/* ---------- render ---------- */
+let playEnter=true;
+function applyVars(){
+  const C=db.theme.c,r=document.documentElement.style,F=db.fonts;
+  const set={'--bgimg':G(C.bg),'--b':C.btn.a,'--btnbg':G(C.btn),'--bd':C.border.a,'--bt':C.btnText.a,'--nm':GA(C.name),'--bnr':`linear-gradient(135deg,${C.name.a},${C.name.t==='grad'?C.name.b:C.border.a})`,'--tagc':C.tag.a,'--descc':C.desc.a,
+    '--ring':G(C.ring),'--avin':C.avIn.a,'--ringw':(db.theme.ringW??5)+'px','--footc':C.foot.a,'--mqbg':G(C.marqBg),'--mqt':C.marqText.a,
+    '--f-name':ff(F.name),'--f-tag':ff(F.tag),'--f-desc':ff(F.desc),'--f-btn':ff(F.btn),'--f-foot':ff(F.foot),'--f-mq':ff(F.mq),'--name-size':F.size+'px'};
+  for(const k in set)r.setProperty(k,set[k]);
+  document.documentElement.style.background=C.bg.a;
+  const X=db.fx,b=document.body.classList;
+  [['fx-over','over'],['fx-float','float'],['fx-shine','shine'],['fx-ring','ring'],['fx-avatar','avatar'],['fx-name','name'],['fx-marq','marq'],['fx-zoom','zoom'],['fx-bg','bg']]
+    .forEach(([c,k])=>b.toggle(c,!!(X.on&&X[k])));
+}
+function linkHtml(l,i){
+  const f=l.frame||db.theme.frame,href=fixUrl(l.url);
+  return `<a class="lk f${f}${l.full?' full':''}" style="--d:${(i%5)*.35}s;--d2:${i*.07}s" data-id="${l.id}" href="${href?esc(href):'#'}" target="_blank" rel="noopener"><span class="shw"><i></i></span>${l.emoji?`<span class="em">${esc(l.emoji)}</span>`:''}<span>${esc(l.label)}</span><span class="edit-dot">แก้</span></a>`;
+}
+function render(){
+  applyVars();const S=db.shop;
+  $('name').textContent=S.name;$('desc').textContent=S.desc;$('foot').textContent=S.foot||'';
+  $('banner').style.backgroundImage=S.banner?`url(${S.banner})`:'';
+  const av=$('avatar');av.style.backgroundImage=S.avatar?`url(${S.avatar})`:'';av.textContent=S.avatar?'':'🌸';
+  $('mq1').textContent=db.fx.marqText;$('mq2').textContent=db.fx.marqText;
+  document.title=S.name;
+  const L=$('links');
+  L.className='links'+(db.theme.cols==1?' one':'')+(playEnter&&db.fx.on&&db.fx.enter?' enter':'');playEnter=false;
+  L.innerHTML=db.links.map(linkHtml).join('');
+  $('imgs').innerHTML=S.imgs.map((src,i)=>`<figure><img src="${src}" alt="" loading="lazy"><button class="btn danger sm x" data-rmimg="${i}">ลบรูป</button></figure>`).join('');
+  runTyping();
+}
+
+/* typing */
+let typeTok=0,lastTypeKey='';
+function runTyping(force){
+  const t=db.shop.tag,on=db.fx.on&&db.fx.typing,key=t+'|'+on,el=$('tag');
+  if(!force&&key===lastTypeKey)return;lastTypeKey=key;const my=++typeTok;
+  if(!on){el.textContent=t;el.classList.remove('caret');return}
+  const ch=graphemes(t);let i=0;el.textContent='';el.classList.add('caret');
+  (function step(){if(my!==typeTok)return;el.textContent=ch.slice(0,++i).join('');if(i<ch.length)setTimeout(step,75)})();
+}
+
+/* ---------- effects: canvas particle engine ---------- */
+const fxOn=k=>db.fx.on&&db.fx[k];
+const RATE={sparkle:2.6,glitter:7,snow:6,bokeh:1.1,heart:1.3,petal:1.6,shoot:.4,bubble:1.1,emoji:1.3};
+const rnd=(a,b)=>a+Math.random()*(b-a);
+function star4(c,r){c.beginPath();c.moveTo(0,-r);c.quadraticCurveTo(r*.14,-r*.14,r,0);c.quadraticCurveTo(r*.14,r*.14,0,r);c.quadraticCurveTo(-r*.14,r*.14,-r,0);c.quadraticCurveTo(-r*.14,-r*.14,0,-r);c.fill()}
+function heartP(c,s){c.beginPath();c.moveTo(0,s*.35);c.bezierCurveTo(-s*1.1,-s*.3,-s*.45,-s*1.05,0,-s*.45);c.bezierCurveTo(s*.45,-s*1.05,s*1.1,-s*.3,0,s*.35);c.fill()}
+class PE{
+  constructor(cv,cfg){this.cv=cv;this.c=cv.getContext('2d');this.cfg=cfg;this.ps=[];this.acc={};this.run=false;this.resize()}
+  resize(){const d=Math.min(2,devicePixelRatio||1),r=this.cv.getBoundingClientRect();this.w=r.width||1;this.h=r.height||1;
+    this.cv.width=Math.round(this.w*d);this.cv.height=Math.round(this.h*d);this.c.setTransform(d,0,0,d,0,0)}
+  start(){if(this.run)return;this.run=true;let last=performance.now();
+    const loop=t=>{if(!this.run)return;const dt=Math.min(.05,(t-last)/1000);last=t;this.step(dt);requestAnimationFrame(loop)};requestAnimationFrame(loop)}
+  stop(){this.run=false;this.ps=[];this.c.clearRect(0,0,this.w,this.h)}
+  col(cols){return cols[Math.floor(Math.random()*cols.length)]}
+  spawn(t,C){const w=this.w,h=this.h,k=C.size||1,p={t,col:this.col(C.colors),age:0,ph:rnd(0,6.28),rot:rnd(0,6.28),vr:0,vx:0,vy:0,g:0};
+    switch(t){
+      case'sparkle':Object.assign(p,{x:rnd(0,w),y:rnd(0,h),life:rnd(1.3,2.6),s:rnd(5,12)*k,vr:rnd(-.6,.6)});break;
+      case'glitter':Object.assign(p,{x:rnd(0,w),y:rnd(0,h),life:rnd(.8,1.8),s:rnd(1,2.4)*k});break;
+      case'snow':Object.assign(p,{x:rnd(0,w),y:-6,vy:rnd(22,50)*k,s:rnd(1.4,3.6)*k});p.life=(h+12)/p.vy;break;
+      case'bokeh':Object.assign(p,{x:rnd(0,w),y:rnd(0,h),vy:-rnd(4,10)*k,life:rnd(4,7),s:rnd(10,26)*k});break;
+      case'heart':Object.assign(p,{x:rnd(0,w),y:h+10,vy:-rnd(35,65)*k,s:rnd(6,12)*k});p.life=(h+20)/-p.vy;break;
+      case'petal':Object.assign(p,{x:rnd(-20,w),y:-8,vy:rnd(28,48)*k,vx:rnd(8,22)*k,vr:rnd(1,3),s:rnd(4,7)*k});p.life=(h+16)/p.vy;break;
+      case'shoot':{const sp=Math.max(240,w*1.1);Object.assign(p,{x:rnd(w*.3,w*1.1),y:rnd(-10,h*.35),vx:-sp*.8,vy:sp*.45,life:rnd(.6,.9),s:Math.max(40,w*.18)});break}
+      case'bubble':Object.assign(p,{x:rnd(0,w),y:h+10,vy:-rnd(25,45)*k,s:rnd(5,12)*k});p.life=(h+20)/-p.vy;break;
+      case'emoji':{const em=graphemes(C.emoji||'✨').filter(x=>x.trim());p.ch=em.length?em[Math.floor(Math.random()*em.length)]:'✨';
+        const up=C.mode!=='fall';Object.assign(p,{x:rnd(0,w),y:up?h+14:-14,vy:(up?-1:1)*rnd(30,55)*k,s:rnd(14,24)*k,vr:rnd(-1,1)});p.life=(h+30)/Math.abs(p.vy);break}
+    }
+    this.ps.push(p)}
+  burst(x,y,cols,n=10){for(let i=0;i<n;i++){const a=rnd(0,6.28),v=rnd(70,190);
+    this.ps.push({t:'spark',x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,age:0,life:rnd(.5,.85),s:rnd(4,8),rot:rnd(0,6.28),vr:rnd(-4,4),col:this.col(cols),g:0,drag:1})}}
+  confetti(x,y,cols,n=26){for(let i=0;i<n;i++){const a=rnd(-Math.PI*.95,-Math.PI*.05),v=rnd(160,340);
+    this.ps.push({t:'conf',x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,age:0,life:rnd(1,1.5),s:rnd(4,7),rot:rnd(0,6.28),vr:rnd(-10,10),col:this.col(cols),g:520,drag:1})}}
+  step(dt){
+    const C=this.cfg(),c=this.c;
+    if(C.active)for(const t of C.types){this.acc[t]=(this.acc[t]||0)+RATE[t]*(C.density/3)*C.scale*dt;
+      while(this.acc[t]>=1){this.acc[t]--;if(this.ps.length<180)this.spawn(t,C)}}
+    c.clearRect(0,0,this.w,this.h);
+    this.ps=this.ps.filter(p=>{
+      p.age+=dt;if(p.age>p.life)return false;
+      if(p.drag){p.vx*=Math.pow(.12,dt);if(p.t==='spark')p.vy*=Math.pow(.12,dt)}
+      p.vy+=p.g*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.rot+=p.vr*dt;
+      const f=Math.max(0,Math.min(1,p.age/.25,(p.life-p.age)/.4));
+      c.save();c.globalAlpha=f;c.fillStyle=p.col;c.strokeStyle=p.col;
+      switch(p.t){
+        case'sparkle':case'spark':{const sc=p.t==='sparkle'?Math.sin(Math.PI*p.age/p.life):1-p.age/p.life*.6;
+          c.translate(p.x,p.y);c.rotate(p.rot);c.shadowColor=p.col;c.shadowBlur=p.s*1.6;star4(c,p.s*sc);
+          c.shadowBlur=0;c.fillStyle='rgba(255,255,255,.9)';star4(c,p.s*sc*.35);break}
+        case'glitter':c.globalAlpha=f*(.25+.75*Math.abs(Math.sin(p.ph+p.age*9)));c.shadowColor=p.col;c.shadowBlur=4;c.beginPath();c.arc(p.x,p.y,p.s,0,6.28);c.fill();break;
+        case'snow':c.globalAlpha=f*.9;c.shadowColor=p.col;c.shadowBlur=3;c.beginPath();c.arc(p.x+Math.sin(p.ph+p.age*1.6)*10,p.y,p.s,0,6.28);c.fill();break;
+        case'bokeh':{const g=c.createRadialGradient(p.x,p.y,0,p.x,p.y,p.s);g.addColorStop(0,p.col);g.addColorStop(1,'transparent');c.globalAlpha=f*.4;c.fillStyle=g;c.beginPath();c.arc(p.x,p.y,p.s,0,6.28);c.fill();break}
+        case'heart':c.translate(p.x+Math.sin(p.ph+p.age*2)*8,p.y);c.rotate(Math.sin(p.ph+p.age*2)*.25);c.globalAlpha=f*.9;heartP(c,p.s);break;
+        case'petal':c.translate(p.x+Math.sin(p.ph+p.age*2)*10,p.y);c.rotate(p.rot);c.globalAlpha=f*.85;c.beginPath();c.ellipse(0,0,p.s*.55,p.s,0,0,6.28);c.fill();break;
+        case'shoot':{const n=Math.hypot(p.vx,p.vy),tx=p.x-p.vx/n*p.s,ty=p.y-p.vy/n*p.s,g=c.createLinearGradient(p.x,p.y,tx,ty);
+          g.addColorStop(0,p.col);g.addColorStop(1,'transparent');c.strokeStyle=g;c.lineWidth=2;c.lineCap='round';c.beginPath();c.moveTo(p.x,p.y);c.lineTo(tx,ty);c.stroke();
+          c.shadowColor=p.col;c.shadowBlur=8;c.beginPath();c.arc(p.x,p.y,1.8,0,6.28);c.fill();break}
+        case'bubble':{const x=p.x+Math.sin(p.ph+p.age*1.5)*8;c.globalAlpha=f*.75;c.lineWidth=1.3;c.beginPath();c.arc(x,p.y,p.s,0,6.28);c.stroke();
+          c.fillStyle='rgba(255,255,255,.8)';c.beginPath();c.arc(x-p.s*.35,p.y-p.s*.35,p.s*.22,0,6.28);c.fill();break}
+        case'emoji':c.translate(p.x,p.y);c.rotate(Math.sin(p.ph+p.age)*.3);c.font=`${p.s}px serif`;c.textAlign='center';c.textBaseline='middle';c.fillText(p.ch,0,0);break;
+        case'conf':c.translate(p.x,p.y);c.rotate(p.rot);c.fillRect(-p.s/2,-p.s*.8,p.s,p.s*1.6);break;
+      }
+      c.restore();return p.y<this.h+60&&p.y>-80;
+    });
+  }
+}
+const mainPE=new PE($('fxb'),()=>{const X=db.fx;return{active:fxOn('particles'),types:X.ptypes,colors:X.pc,density:X.density,emoji:X.emoji,mode:X.mode,
+  scale:Math.max(.7,Math.min(1.8,innerWidth*innerHeight/320000)),size:1}});
+const topPE=new PE($('fxc'),()=>({active:false,types:[],colors:['#fff'],density:3,scale:1}));
+addEventListener('resize',()=>{mainPE.resize();topPE.resize()});
+mainPE.start();topPE.start();
+let actx;
+function pop(){try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();const o=actx.createOscillator(),g=actx.createGain(),t=actx.currentTime;
+  o.type='sine';o.frequency.setValueAtTime(520,t);o.frequency.exponentialRampToValueAtTime(1300,t+.09);
+  g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+.16);o.connect(g).connect(actx.destination);o.start(t);o.stop(t+.17)}catch(e){}}
+document.addEventListener('pointerdown',e=>{
+  if(!fxOn('tap')||e.target.closest('dialog,.abar,.trybar,.lk'))return;
+  topPE.burst(e.clientX,e.clientY,db.fx.pc.concat(db.theme.c.border.a),10);
+});
+
+/* ---------- info page ---------- */
+const infoPE=new PE($('iCv'),()=>{const X=db.fx;return{active:X.on,types:X.on&&X.particles&&X.ptypes.length?X.ptypes:['sparkle'],colors:X.pc,density:4,emoji:X.emoji,mode:X.mode,scale:1.6,size:1}});
+function openInfo(l){
+  const I=l.info||{},h=$('iHero');
+  $('iTitle').textContent=l.label;$('iText').textContent=I.text||'';
+  h.classList.toggle('hasimg',!!I.img);h.style.backgroundImage=I.img?`url(${I.img})`:'';
+  $('iEm').textContent=I.img?'':(l.emoji||'✨');
+  const href=fixUrl(l.url),f=l.frame||db.theme.frame;
+  $('iGo').innerHTML=href?`<a class="lk f${f}" href="${esc(href)}" target="_blank" rel="noopener"><span class="shw"><i></i></span><span>${esc(I.go||'ไปที่ลิงก์')}</span><span class="arr">→</span></a>`:'';
+  const d=$('dInfo');if(!d.open)d.showModal();$('dInfo').querySelector('.isc').scrollTop=0;
+  requestAnimationFrame(()=>{infoPE.resize();infoPE.start()});
+  if(db.fx.on&&db.fx.sound)pop();
+}
+$('dInfo').addEventListener('close',()=>infoPE.stop());
+$('dInfo').addEventListener('click',e=>{if(e.target===$('dInfo'))$('dInfo').close()});
+$('iX').onclick=()=>$('dInfo').close();
+$('iGo').addEventListener('click',()=>{if(db.fx.on&&db.fx.sound)pop()});
+
+/* link clicks */
+$('links').addEventListener('click',e=>{
+  const a=e.target.closest('.lk');if(!a)return;
+  if(isAdmin()&&!document.body.classList.contains('trying')){e.preventDefault();openLink(a.dataset.id);return}
+  const lnk=db.links.find(x=>x.id===a.dataset.id);
+  if(lnk&&lnk.mode==='info'){e.preventDefault();openInfo(lnk);return}
+  const r=a.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
+  if(fxOn('confetti'))topPE.confetti(x,y,[db.theme.c.border.a,db.theme.c.name.a,db.theme.c.name.b,'#FFFFFF','#FED369',...db.fx.pc]);
+  if(db.fx.on&&db.fx.sound)pop();
+  if(a.getAttribute('href')==='#'){e.preventDefault();toast('ปุ่มนี้ยังไม่ได้ใส่ลิงก์ค่ะ')}
+});
+$('imgs').addEventListener('click',e=>{const b=e.target.closest('[data-rmimg]');if(b&&confirm('ลบรูปนี้?')){db.shop.imgs.splice(+b.dataset.rmimg,1);save();render()}});
+
+/* ---------- trial (ทดลองก่อนใช้จริง) ---------- */
+let trial=null;
+function beginTrial(id){trial={id,snap:JSON.stringify(db)};$(id).showModal();({dColor:openColor,dFont:openFont,dFx:openFx,dFrame:openFrame})[id]()}
+function endTrial(){document.body.classList.remove('trying');document.querySelectorAll('dialog.trial').forEach(d=>d.open&&d.close());trial=null}
+function applyTrial(){if(!trial)return;if(save()){endTrial();toast('✅ ใช้จริงแล้ว')}}
+function cancelTrial(){if(!trial)return;db=JSON.parse(trial.snap);endTrial();lastTypeKey='';render();toast('ยกเลิกแล้ว กลับเป็นแบบเดิม')}
+function previewTrial(){$(trial.id).close();document.body.classList.add('trying');window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('[data-trial]').forEach(b=>b.onclick=()=>beginTrial(b.dataset.trial));
+document.querySelectorAll('dialog.trial').forEach(d=>{
+  d.addEventListener('cancel',e=>{e.preventDefault();cancelTrial()});
+  d.querySelector('[data-apply]').onclick=applyTrial;d.querySelector('[data-cancel]').onclick=cancelTrial;d.querySelector('[data-preview]').onclick=previewTrial;
+});
+$('tBack').onclick=()=>{document.body.classList.remove('trying');$(trial.id).showModal();({dColor:openColor,dFont:openFont,dFx:openFx,dFrame:openFrame})[trial.id]()};
+$('tApply').onclick=applyTrial;$('tCancel').onclick=cancelTrial;
+const pressSeg=(el,v)=>el.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v==v));
+
+/* ---------- COLOR dialog ---------- */
+let cT='bg',cS='a',cTab='named';
+function curObj(){return db.theme.c[cT]}
+function curHex(){const o=curObj();return o.t==='grad'&&cS==='b'?o.b:o.a}
+function setHex(h){h=h.toUpperCase();const o=curObj();if(o.t==='grad'&&cS==='b')o.b=h;else{o.a=h;if(o.t!=='grad')o.b=h}render();refreshColor()}
+function refreshColor(){
+  const o=curObj(),t=TARGETS.find(x=>x.k===cT);
+  $('cTargets').innerHTML=TARGETS.map(x=>`<button type="button" class="tchip" data-k="${x.k}" aria-pressed="${x.k===cT}"><i style="background:${G(db.theme.c[x.k])}"></i>${x.n}</button>`).join('');
+  $('cMode').style.display=t.g?'':'none';pressSeg($('cMode'),o.t);
+  const g=t.g&&o.t==='grad';$('cSlot').style.display=g?'':'none';$('cDegL').style.display=g?'':'none';pressSeg($('cSlot'),cS);
+  $('cDeg').value=o.deg??135;$('cRingL').style.display=cT==='ring'?'':'none';$('cRing').value=db.theme.ringW??5;
+  const h=curHex();$('cSw').style.background=g?G(o):h;$('cHex').value=h;$('cPick').value=h;
+  const[H,Sa]=hex2hsl(h);
+  $('cShades').innerHTML=[95,88,80,71,62,53,44,35,26,17].map(L=>{const c=hsl2hex(H,Sa,L);return`<button type="button" data-hex="${c}" style="background:${c}" aria-label="${c}"></button>`}).join('');
+}
+function renderPal(){
+  pressSeg($('cTabs'),cTab);const P=$('cPal');
+  if(cTab==='named'){P.className='pal';P.innerHTML=NAMED.map(c=>`<button type="button" class="it" data-hex="${c.h}"><b style="background:${c.h}"></b>${esc(c.n)}<br>${c.h}</button>`).join('')}
+  else if(cTab==='pink'){P.className='pal small';P.innerHTML=PINKS.map(h=>`<button type="button" class="it" data-hex="${h}"><b style="background:${h}"></b>${h.slice(1)}</button>`).join('')}
+  else if(cTab==='grads'){P.className='pal grads';P.innerHTML=GRADS.map(([a,b],i)=>`<button type="button" class="it" data-grad="${i}"><b style="background:linear-gradient(135deg,${a},${b})"></b>${a.slice(1)} → ${b.slice(1)}</button>`).join('')}
+  else{P.className='pal sets';P.innerHTML=SETS.map((s,i)=>`<button type="button" class="setcard" data-set="${i}">
+    <div class="mini" style="background:linear-gradient(160deg,${s[1]},${s[2]})"><b style="background-image:linear-gradient(90deg,${s[6]},${s[7]})">ร้านน่ารัก</b>
+    <span style="background:${s[3]};border-color:${s[4]};color:${s[5]}">ปุ่มตัวอย่าง</span></div>${s[0]}</button>`).join('')}
+}
+function openColor(){refreshColor();renderPal()}
+$('cTargets').onclick=e=>{const b=e.target.closest('[data-k]');if(!b)return;cT=b.dataset.k;cS='a';refreshColor()};
+$('cMode').onclick=e=>{const b=e.target.closest('[data-v]');if(!b)return;const o=curObj();o.t=b.dataset.v;
+  if(o.t==='grad'&&o.b===o.a){const[h,s,l]=hex2hsl(o.a);o.b=hsl2hex(h+40,s,Math.min(90,l+6))}cS='a';render();refreshColor()};
+$('cSlot').onclick=e=>{const b=e.target.closest('[data-v]');if(b){cS=b.dataset.v;refreshColor()}};
+$('cDeg').oninput=e=>{curObj().deg=+e.target.value;render();$('cSw').style.background=G(curObj());refreshColor()};
+$('cRing').oninput=e=>{db.theme.ringW=+e.target.value;render()};
+$('cHex').oninput=e=>{let v=e.target.value.trim();if(v&&v[0]!=='#')v='#'+v;if(validHex(v))setHex(v)};
+$('cPick').oninput=e=>setHex(e.target.value);
+$('cShades').onclick=e=>{const b=e.target.closest('[data-hex]');if(b)setHex(b.dataset.hex)};
+$('cTabs').onclick=e=>{const b=e.target.closest('[data-v]');if(b){cTab=b.dataset.v;renderPal()}};
+$('cPal').onclick=e=>{
+  const h=e.target.closest('[data-hex]'),g=e.target.closest('[data-grad]'),s=e.target.closest('[data-set]');
+  if(h){setHex(h.dataset.hex);toast(`${TARGETS.find(x=>x.k===cT).n} → ${h.dataset.hex}`)}
+  else if(g){const[a,b]=GRADS[+g.dataset.grad],o=curObj(),t=TARGETS.find(x=>x.k===cT);
+    if(t.g){o.t='grad';o.a=a;o.b=b}else{o.a=a;o.b=a;toast('ส่วนนี้ใช้ได้สีเดียว เลยใช้สีแรกให้นะคะ')}render();refreshColor()}
+  else if(s){db.theme.c=setTheme(SETS[+s.dataset.set]);render();refreshColor();toast(`ใช้ธีม "${SETS[+s.dataset.set][0]}" (ยังไม่บันทึก)`)}
+};
+$('cAuto').onclick=()=>{db.theme.c=autoTheme(curHex());render();refreshColor();toast('✨ จับคู่สีทั้งเว็บให้แล้ว ลองดูทั้งหน้าได้เลย')};
+
+/* ---------- FONT dialog ---------- */
+let fT='all';
+function openFont(){
+  $('fTargets').innerHTML=FTARGETS.map(t=>`<button type="button" data-v="${t.k}">${t.n}</button>`).join('');pressSeg($('fTargets'),fT);
+  $('fSize').value=db.fonts.size;drawFonts();
+}
+function drawFonts(){const cur=fT==='all'?db.fonts.name:db.fonts[fT];
+  $('fList').innerHTML=FONTS.map(f=>`<button type="button" class="fo" data-f="${f}" aria-pressed="${fT!=='all'&&f===cur}"><span style="font-family:${ff(f)}">ร้านน่ารัก Aa</span><small>${f}</small></button>`).join('')}
+$('fTargets').onclick=e=>{const b=e.target.closest('[data-v]');if(!b)return;fT=b.dataset.v;pressSeg($('fTargets'),fT);drawFonts()};
+$('fList').onclick=e=>{const b=e.target.closest('[data-f]');if(!b)return;const f=b.dataset.f;
+  if(fT==='all')['name','tag','desc','btn','foot','mq'].forEach(k=>db.fonts[k]=f);else db.fonts[fT]=f;
+  render();drawFonts();if(fT==='all')$('fList').querySelector(`[data-f="${f}"]`).setAttribute('aria-pressed','true');toast(`ใช้ฟอนต์ ${f}`)};
+$('fSize').oninput=e=>{db.fonts.size=+e.target.value;render()};
+
+/* ---------- FX dialog ---------- */
+let minis=[],pSlot=0;
+const QUICK=()=>['#FFFFFF','#FFF6D7','#FFD66B','#FCEE9E','#FFBBDA','#FF77C1','#FF51B0','#E8CFF8','#B5B1C8','#C0E4F6','#8BD2EC','#D0F4DE','#92CEA8','#FAA86F',db.theme.c.border.a,db.theme.c.name.a];
+function stopMinis(){minis.forEach(m=>m.stop());minis=[]}
+let xTab='quick';
+function drawSlots(){const P=db.fx.pc;if(pSlot>=P.length)pSlot=P.length-1;
+  $('xSlots').innerHTML=P.map((c,i)=>`<button type="button" class="slot" data-slot="${i}" aria-pressed="${i===pSlot}" style="background:${c}" aria-label="สีที่ ${i+1}">${P.length>1?`<span class="rm" data-rm="${i}">×</span>`:''}</button>`).join('')+
+    (P.length<6?'<button type="button" class="addslot" id="xAdd" aria-label="เพิ่มสี">+</button>':'');
+  $('xPick').value=P[pSlot]}
+function drawXPal(){pressSeg($('xTabs'),xTab);const P=$('xPal');
+  if(xTab==='quick'){P.className='qsw';P.innerHTML=QUICK().map(c=>`<button type="button" data-q="${c}" style="background:${c}" aria-label="${c}"></button>`).join('')}
+  else if(xTab==='named'){P.className='pal';P.innerHTML=NAMED.map(c=>`<button type="button" class="it" data-q="${c.h}"><b style="background:${c.h}"></b>${esc(c.n)}<br>${c.h}</button>`).join('')}
+  else{P.className='pal small';P.innerHTML=PINKS.map(h=>`<button type="button" class="it" data-q="${h}"><b style="background:${h}"></b>${h.slice(1)}</button>`).join('')}}
+function openFx(){const X=db.fx;stopMinis();
+  $('xOn').checked=X.on;$('xAll').classList.toggle('off',!X.on);
+  document.querySelector('[data-x="particles"]').checked=X.particles;
+  $('xTypes').innerHTML=PTYPES.map(([k,n])=>`<button type="button" class="pcard" data-pt="${k}" aria-pressed="${X.ptypes.includes(k)}"><canvas></canvas><span>${n}</span></button>`).join('');
+  $('xList').innerHTML=FX.map(([k,n,d])=>`<label class="sw-row"><span class="demo ${k}" aria-hidden="true">${demoHtml(k)}</span><div class="txt">${n}<small>${d}</small></div><input type="checkbox" class="tg" data-x="${k}" ${X[k]?'checked':''}></label>`).join('');
+  drawXPal();document.querySelector('[data-x="over"]').checked=!!X.over;
+  $('xEmoji').value=X.emoji;$('xMarq').value=X.marqText;$('xDensity').value=X.density;pressSeg($('xMode'),X.mode);
+  $('xEmoBox').style.display=X.ptypes.includes('emoji')?'':'none';
+  drawSlots();
+  requestAnimationFrame(()=>{$('xTypes').querySelectorAll('.pcard').forEach(card=>{const t=card.dataset.pt;
+    const m=new PE(card.querySelector('canvas'),()=>({active:true,types:[t],colors:db.fx.pc,density:3,emoji:db.fx.emoji,mode:db.fx.mode,scale:t==='shoot'?2.5:.9,size:.8}));
+    m.resize();m.start();minis.push(m)})});
+}
+$('dFx').addEventListener('close',stopMinis);
+$('xOn').onchange=e=>{db.fx.on=e.target.checked;$('xAll').classList.toggle('off',!db.fx.on);render();toast(db.fx.on?'เปิดลูกเล่นแล้ว':'ปิดลูกเล่นทั้งหมดแล้ว')};
+$('xAll').addEventListener('change',e=>{const k=e.target.dataset.x;if(!k)return;db.fx[k]=e.target.checked;
+  if(k==='enter'&&db.fx[k])playEnter=true;if(k==='sound'&&db.fx[k])pop();render()});
+$('xTypes').onclick=e=>{const b=e.target.closest('[data-pt]');if(!b)return;const t=b.dataset.pt,L=db.fx.ptypes;
+  const i=L.indexOf(t);if(i>=0)L.splice(i,1);else L.push(t);b.setAttribute('aria-pressed',i<0);
+  if(i<0&&!db.fx.particles){db.fx.particles=true;document.querySelector('[data-x="particles"]').checked=true}
+  $('xEmoBox').style.display=L.includes('emoji')?'':'none'};
+$('xSlots').onclick=e=>{const rm=e.target.closest('[data-rm]');
+  if(rm){db.fx.pc.splice(+rm.dataset.rm,1);pSlot=Math.max(0,pSlot-1);drawSlots();return}
+  if(e.target.closest('#xAdd')){db.fx.pc.push('#FFBBDA');pSlot=db.fx.pc.length-1;drawSlots();return}
+  const b=e.target.closest('[data-slot]');if(b){pSlot=+b.dataset.slot;drawSlots()}};
+$('xTabs').onclick=e=>{const b=e.target.closest('[data-v]');if(b){xTab=b.dataset.v;drawXPal()}};
+$('xPal').onclick=e=>{const b=e.target.closest('[data-q]');if(!b)return;db.fx.pc[pSlot]=b.dataset.q;drawSlots()};
+$('xPick').oninput=e=>{db.fx.pc[pSlot]=e.target.value.toUpperCase();drawSlots()};
+$('xEmoji').oninput=e=>db.fx.emoji=e.target.value;
+$('xMarq').oninput=e=>{db.fx.marqText=e.target.value;render()};
+$('xDensity').oninput=e=>db.fx.density=+e.target.value;
+$('xMode').onclick=e=>{const b=e.target.closest('[data-v]');if(b){db.fx.mode=b.dataset.v;pressSeg($('xMode'),b.dataset.v)}};
+
+/* ---------- FRAME picker ---------- */
+function framePicker(el,current,withDefault,onPick){
+  const items=withDefault?[{i:0,n:'ใช้กรอบหลัก'}]:[];for(let i=1;i<FRAMES.length;i++)items.push({i,n:FRAMES[i]});
+  el.innerHTML=items.map(it=>`<button type="button" class="fp" data-fr="${it.i}" aria-pressed="${it.i===current}"><span class="lk f${it.i||db.theme.frame}">ตัวอย่าง</span><span>${it.n}</span></button>`).join('');
+  el.onclick=e=>{const b=e.target.closest('[data-fr]');if(!b)return;el.querySelectorAll('.fp').forEach(x=>x.setAttribute('aria-pressed',x===b));onPick(+b.dataset.fr)};
+}
+function openFrame(){pressSeg($('rCols'),db.theme.cols);framePicker($('rFrames'),db.theme.frame,false,f=>{db.theme.frame=f;render()})}
+$('rCols').onclick=e=>{const b=e.target.closest('[data-v]');if(!b)return;db.theme.cols=+b.dataset.v;pressSeg($('rCols'),b.dataset.v);render()};
+
+/* ---------- LINK editor (saves directly) ---------- */
+let editId=null,draft=null;
+function drawPrev(){$('lPrev').innerHTML=linkHtml({...draft,label:draft.label||'ข้อความบนปุ่ม',full:false},0).replace('href=','data-x=')}
+function setSize(v){draft.full=v==='full';pressSeg($('lSize'),v)}
+function setMode(v){draft.mode=v;pressSeg($('lMode'),v);$('lInfoBox').style.display=v==='info'?'':'none'}
+function readDraft(){draft.label=$('lLabel').value.trim();draft.url=$('lUrl').value.trim();draft.emoji=$('lEmoji').value.trim();
+  draft.info.text=$('lText').value;draft.info.go=$('lGo').value.trim()}
+function openLink(id){
+  editId=id;const l=db.links.find(x=>x.id===id);
+  draft=l?{...l}:{id:Math.random().toString(36).slice(2),label:'',url:'',emoji:'',full:false,frame:0};
+  draft.info={img:'',text:'',go:'',...(l&&l.info||{})};draft.mode=draft.mode||'link';
+  $('dLinkTitle').textContent=l?'แก้ไขปุ่ม':'เพิ่มปุ่ม';['lDel','lUp','lDown'].forEach(b=>$(b).style.display=l?'':'none');
+  $('lLabel').value=draft.label;$('lUrl').value=draft.url;$('lEmoji').value=draft.emoji;setSize(draft.full?'full':'half');
+  setMode(draft.mode);$('lText').value=draft.info.text;$('lGo').value=draft.info.go;$('lImg').value='';
+  framePicker($('lFrames'),draft.frame,true,f=>{draft.frame=f;drawPrev()});drawPrev();$('dLink').showModal();
+}
+['lLabel','lEmoji'].forEach(id=>$(id).addEventListener('input',()=>{draft.label=$('lLabel').value;draft.emoji=$('lEmoji').value.trim();drawPrev()}));
+$('lMode').onclick=e=>{const b=e.target.closest('[data-v]');if(b)setMode(b.dataset.v)};
+$('lImg').onchange=async e=>{const f=e.target.files[0];if(!f)return;toast('กำลังอัปโหลดรูป...');try{draft.info.img=await uploadImg(f,900);toast('ใส่รูปหัวแล้ว')}catch(err){toast(err.message||'อัปโหลดรูปไม่ได้')}};
+$('lImgRm').onclick=()=>{draft.info.img='';$('lImg').value='';toast('ลบรูปหัวแล้ว')};
+$('lPrevInfo').onclick=()=>{readDraft();openInfo({...draft,label:draft.label||'หัวข้อ'})};
+$('lSize').onclick=e=>{const b=e.target.closest('[data-v]');if(b)setSize(b.dataset.v)};
+$('fLink').onsubmit=e=>{e.preventDefault();readDraft();
+  const i=db.links.findIndex(x=>x.id===editId);if(i>=0)db.links[i]=draft;else db.links.push(draft);
+  save();render();$('dLink').close();toast(draft.url?'บันทึกปุ่มแล้ว':'บันทึกแล้ว (ยังไม่ได้ใส่ลิงก์)')};
+$('lDel').onclick=()=>{if(!confirm('ลบปุ่มนี้?'))return;db.links=db.links.filter(x=>x.id!==editId);save();render();$('dLink').close()};
+function move(d){const i=db.links.findIndex(x=>x.id===editId),j=i+d;if(j<0||j>=db.links.length)return;[db.links[i],db.links[j]]=[db.links[j],db.links[i]];save();render();toast(d<0?'เลื่อนขึ้นแล้ว':'เลื่อนลงแล้ว')}
+$('lUp').onclick=()=>move(-1);$('lDown').onclick=()=>move(1);
+$('bAdd').onclick=()=>openLink(null);
+
+/* ---------- SHOP ---------- */
+function shrink(file,max=1000){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>{
+  const w=Math.min(max,img.width),h=Math.round(img.height*w/img.width),c=document.createElement('canvas');c.width=w;c.height=h;
+  c.getContext('2d').drawImage(img,0,0,w,h);res(c.toDataURL('image/jpeg',.78))};img.onerror=rej;img.src=URL.createObjectURL(file)})}
+async function uploadImg(file,max){
+  const data=await shrink(file,max);if(!REMOTE)return data;
+  if(!IMGBB_KEY)throw new Error('ยังไม่ได้ใส่ IMGBB_KEY');
+  const fd=new FormData();fd.append('image',data.split(',')[1]);
+  const r=await fetch('https://api.imgbb.com/1/upload?key='+encodeURIComponent(IMGBB_KEY),{method:'POST',body:fd});
+  const j=await r.json();if(!j.success)throw new Error('อัปโหลดรูปไม่สำเร็จ');return j.data.url;
+}
+$('bShop').onclick=()=>{const S=db.shop;$('sName').value=S.name;$('sTag').value=S.tag;$('sDesc').value=S.desc;$('sFoot').value=S.foot||'';
+  ['sBanner','sAvatar','sImgs','sPin'].forEach(i=>$(i).value='');$('pinRow').style.display=REMOTE?'none':'';$('dShop').showModal()};
+$('fShop').onsubmit=async e=>{e.preventDefault();const S=db.shop;
+  S.name=$('sName').value.trim()||S.name;S.tag=$('sTag').value.trim();S.desc=$('sDesc').value.trim();S.foot=$('sFoot').value.trim();
+  const p=$('sPin').value.trim();if(p)db.pin=p;
+  const hasImg=$('sBanner').files[0]||$('sAvatar').files[0]||$('sImgs').files.length;if(hasImg)toast('กำลังอัปโหลดรูป...');
+  try{if($('sBanner').files[0])S.banner=await uploadImg($('sBanner').files[0],1200);
+    if($('sAvatar').files[0])S.avatar=await uploadImg($('sAvatar').files[0],400);
+    for(const f of $('sImgs').files)S.imgs.push(await uploadImg(f,1000))}catch(err){toast(err.message||'อัปโหลดรูปไม่ได้')}
+  if(save()){render();$('dShop').close();toast('บันทึกข้อมูลร้านแล้ว')}};
+$('sClear').onclick=()=>{if(!confirm('ลบแบนเนอร์และรูปโปรไฟล์?'))return;db.shop.banner='';db.shop.avatar='';save();render()};
+
+/* ---------- admin entry ---------- */
+let taps=0,tt;
+$('avtap').addEventListener('click',()=>{taps++;clearTimeout(tt);tt=setTimeout(()=>taps=0,1500);
+  if(taps>=5){taps=0;if(isAdmin())return;
+    if(REMOTE&&auth.currentUser){enterAdmin();return}
+    $('pin').value='';$('dPin').showModal()}});
+function enterAdmin(){document.body.classList.add('admin');if($('dPin').open)$('dPin').close();toast('เข้าหลังบ้านแล้ว แตะปุ่มไหนก็แก้ได้เลย')}
+$('fPin').onsubmit=async e=>{e.preventDefault();
+  if(REMOTE){try{await auth.signInWithEmailAndPassword(ADMIN_EMAIL,$('pin').value.trim());enterAdmin()}catch(err){toast('PIN ไม่ถูกต้อง')}return}
+  if($('pin').value===db.pin)enterAdmin();else toast('PIN ไม่ถูกต้อง')};
+$('bOut').onclick=()=>{document.body.classList.remove('admin');if(REMOTE)auth.signOut();toast('ออกจากหลังบ้านแล้ว')};
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
+
+function ready(){document.body.classList.remove('loading')}
+if(!REMOTE){render();ready()}
+else{
+  firebase.initializeApp(FIREBASE_CONFIG);fs=firebase.firestore();auth=firebase.auth();
+  db=normalize(null);
+  setTimeout(()=>{if(document.body.classList.contains('loading')){render();ready();toast('เชื่อมต่อฐานข้อมูลช้า กำลังแสดงหน้าเริ่มต้น')}},6000);
+  fs.doc('sites/main').onSnapshot(snap=>{
+    if(trial||document.querySelector('#dLink[open],#dShop[open]'))return;
+    if(snap.exists)db=normalize(snap.data());render();ready();
+  },err=>{toast('โหลดข้อมูลไม่สำเร็จ ('+err.code+')');render();ready()});
+}
+</script>
+</body>
+</html>
