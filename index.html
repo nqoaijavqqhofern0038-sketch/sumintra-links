@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ลิงก์ร้าน</title>
+<link rel="icon" id="fav" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌸</text></svg>">
+<link rel="apple-touch-icon" id="favA" href="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap" rel="stylesheet">
@@ -62,17 +64,64 @@ body.fx-bg .bgl{animation:bgmove 12s ease-in-out infinite alternate}
 .wrap{max-width:560px;margin:0 auto;padding:0 18px 120px;position:relative}
 
 /* banner + marquee */
-.banner{max-width:560px;margin:0 auto;aspect-ratio:2.6/1;overflow:hidden;position:relative}
+.banner{max-width:560px;margin:0 auto;aspect-ratio:var(--bnar,2.6);overflow:hidden;position:relative}
+body.bn-card .banner{width:calc(100% - 28px);max-width:532px;margin:10px auto 0;border-radius:22px;box-shadow:0 6px 18px rgba(0,0,0,.08);isolation:isolate}
+/* top bar */
+.topbar{display:none;width:calc(100% - 28px);max-width:532px;margin:10px auto 0;align-items:center;justify-content:space-between;gap:10px;padding:6px 14px;min-height:38px;border-radius:999px;
+  background:rgba(255,255,255,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:var(--tagc);font-family:var(--f-tag);font-weight:700;font-size:16px;position:relative;z-index:1;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+body.has-top .topbar,.topbar.pv{display:flex}
+.tb-l,.tb-r{display:flex;align-items:center;gap:8px}
+.tb-img{height:var(--tbimg,28px);width:auto;max-width:140px;object-fit:contain;border-radius:8px}
+.tbic{width:20px;height:20px;flex:none}
+.tb-l{min-width:0;flex:1}.tbtx{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.sndbtn{position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;width:46px;height:46px;border-radius:50%;border:2px solid var(--bd);background:var(--b);font-size:20px;box-shadow:0 4px 14px rgba(0,0,0,.12);cursor:pointer}
+body.admin .sndbtn{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+.mqgrid>*,.bmgrid>*,.sndgrid>*{min-width:0}.mqgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.sndgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sndgrid button{border:2px solid var(--line);border-radius:12px;background:transparent;padding:10px 4px;font-size:13px;color:var(--pt);display:grid;gap:2px;place-items:center}
+.sndgrid button[aria-pressed=true]{border-color:#F48FB8;background:rgba(244,143,184,.12)}
+.sndgrid button span{font-size:18px}
 .bimg{width:100%;height:100%;background:center/cover no-repeat;background-image:radial-gradient(rgba(255,255,255,.6) 2px,transparent 2.6px),var(--bnr);background-size:18px 18px,cover}
-body.fx-zoom .bimg{animation:kb 16s ease-in-out infinite alternate}
+body.bm-zoom .bimg,.bmp.zoom i{animation:kb 16s ease-in-out infinite alternate}
+body.bm-pan .bimg,.bmp.pan i{animation:bpan 9s ease-in-out infinite alternate}
+body.bm-float .bimg,.bmp.float i{animation:bfloat 4s ease-in-out infinite alternate}
+body.bm-sway .bimg,.bmp.sway i{animation:bsway 5s ease-in-out infinite alternate}
+body.bm-pulse .bimg,.bmp.pulse i{animation:bpulse 2.4s ease-in-out infinite alternate}
+.bmp.zoom i{animation-duration:3s}.bmp.pan i{animation-duration:2.5s}
 @keyframes kb{to{transform:scale(1.13) translate(-2%,-2%)}}
+@keyframes bpan{from{transform:scale(1.15) translateX(-5%)}to{transform:scale(1.15) translateX(5%)}}
+@keyframes bfloat{from{transform:scale(1.08) translateY(-3%)}to{transform:scale(1.08) translateY(3%)}}
+@keyframes bsway{from{transform:scale(1.1) rotate(-1.5deg)}to{transform:scale(1.1) rotate(1.5deg)}}
+@keyframes bpulse{from{transform:scale(1)}to{transform:scale(1.06)}}
 .marq{display:none;overflow:hidden;background:var(--mqbg);color:var(--mqt);font-family:var(--f-mq);font-size:14.5px;padding:7px 0;max-width:560px;margin:0 auto}
 body.fx-marq .marq{display:block}
 .marq .track{display:inline-flex;gap:60px;white-space:nowrap;padding-left:100%;animation:marq 16s linear infinite}
 @keyframes marq{to{transform:translateX(-100%)}}
+/* marquee frames */
+.ms1,.ms2,.ms3,.ms4,.ms5,.ms6,.ms7,.ms8,.ms9{width:calc(100% - 28px);max-width:532px;margin:10px auto 0!important}
+.ms1{border-radius:999px}
+.ms2{border-radius:14px;border:2px dashed var(--mqt);background-clip:padding-box}
+.ms3{clip-path:polygon(0 0,100% 0,96% 50%,100% 100%,0 100%,4% 50%);padding-left:4%!important;padding-right:4%!important}
+.ms4{border-radius:16px;background:rgba(255,255,255,.35)!important;color:var(--tagc)!important;border:1.5px solid rgba(255,255,255,.8);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.ms5{border-radius:14px;background-image:radial-gradient(rgba(255,255,255,.45) 1.6px,transparent 2px),var(--mqbg)!important;background-size:12px 12px,cover!important}
+.ms6{border-radius:14px;outline:2px solid var(--mqt);outline-offset:-5px}
+.ms7{border-radius:14px;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.22) 0 8px,transparent 8px 16px),var(--mqbg)!important}
+.ms8{border-radius:999px;position:relative;padding-left:34px!important;padding-right:34px!important}
+.ms8::before,.ms8::after{content:"♥";position:absolute;top:50%;translate:0 -50%;z-index:2;font-size:15px;width:30px;text-align:center;background:inherit;height:100%;display:grid;place-items:center}
+.ms8::before{left:0;border-radius:999px 0 0 999px}.ms8::after{right:0;border-radius:0 999px 999px 0}
+.ms9{border-radius:12px;border:2px solid var(--tagc);box-shadow:3px 3px 0 var(--tagc)}
+.mqp{display:block;overflow:hidden;background:var(--mqbg);color:var(--mqt);font-size:12px;padding:6px 0;white-space:nowrap;position:relative}
+.mqp.ms1,.mqp.ms2,.mqp.ms3,.mqp.ms4,.mqp.ms5,.mqp.ms6,.mqp.ms7,.mqp.ms8,.mqp.ms9{width:100%;margin:0!important}
+.mqp span{display:inline-block;padding-left:100%;animation:marq 4s linear infinite}
+.mqgrid,.bmgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mqgrid button,.bmgrid button{border:2px solid var(--line);border-radius:14px;background:transparent;padding:10px 8px 6px;font-size:12px;color:var(--pm);display:grid;gap:6px;text-align:center}
+.mqgrid button[aria-pressed=true],.bmgrid button[aria-pressed=true]{border-color:#F48FB8;background:rgba(244,143,184,.1)}
+.bmp{display:block;height:54px;border-radius:10px;overflow:hidden}
+.bmp i{display:block;width:100%;height:100%;background:radial-gradient(circle at 30% 40%,#fff 0 6px,transparent 7px),radial-gradient(circle at 70% 65%,#fff8 0 9px,transparent 10px),linear-gradient(135deg,#FFBBDA,#E8CFF8);background-size:cover;background-position:center}
 
 /* header */
 .head{display:flex;gap:14px;align-items:flex-end;margin-top:-50px;position:relative;z-index:2}
+body.mq-box .head{margin-top:14px}
 .avwrap{position:relative;width:116px;height:116px;flex:none;border-radius:50%;padding:var(--ringw,5px);-webkit-tap-highlight-color:transparent}
 .avwrap::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--ring)}
 body.fx-ring .avwrap::before{animation:spin 5s linear infinite}
@@ -247,6 +296,17 @@ dialog h3{margin:0 0 12px;font-size:19px}
 .dfoot{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;padding:12px 18px;border-top:1px solid var(--line);background:var(--panel)}
 .form{display:grid;gap:11px}
 label.l{display:grid;gap:4px;font-size:14px;color:var(--pm)}
+.form>*,.sbox>*{min-width:0}.topbar.pv{width:100%;margin:0}
+.sbox{min-width:0;display:grid;gap:10px;border:1.5px dashed var(--line);border-radius:14px;padding:12px}
+.chk{display:flex;align-items:center;gap:8px;font-size:14px}
+.crow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.crow input[type=color]{width:100%;height:40px;border:1.5px solid var(--line);border-radius:10px;padding:2px;background:transparent}
+.ringprev{width:74px;height:74px;border-radius:50%;margin:0 auto;display:grid;place-items:center}
+.ringprev i{width:100%;height:100%;border-radius:50%;background:#fff;display:block}
+.rlab{display:flex;justify-content:space-between;font-size:12px}
+.rpal{max-height:260px;overflow:auto;border-radius:12px}
+.pinw{position:relative}.pinw .f{padding-right:48px}
+.eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:transparent;font-size:20px;padding:6px;cursor:pointer}
 .f{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:9px 11px;background:transparent;color:var(--pt)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .seg{display:flex;gap:6px;flex-wrap:wrap}
@@ -312,6 +372,7 @@ input[type=range]{width:100%;accent-color:var(--pa)}
 <div class="bgl" aria-hidden="true"></div>
 <canvas id="fxb" aria-hidden="true"></canvas><canvas id="fxc" aria-hidden="true"></canvas>
 
+<div class="topbar" id="topbar" aria-hidden="true"></div>
 <div class="banner"><div class="bimg" id="banner" role="img" aria-label="แบนเนอร์"></div></div>
 <div class="marq" aria-live="off"><div class="track"><span id="mq1"></span><span id="mq2" aria-hidden="true"></span></div></div>
 <main class="wrap">
@@ -465,13 +526,56 @@ input[type=range]{width:100%;accent-color:var(--pa)}
   <form id="fShop" method="dialog">
   <div class="dbody"><div class="form">
     <h3 style="margin:0">ข้อมูลร้าน</h3>
-    <label class="l">รูปแบนเนอร์<input class="f" type="file" accept="image/*" id="sBanner"></label>
+    <div class="sbox"><b>📱 แถบด้านบนสุด</b>
+      <div class="topbar pv" id="sTbPrev"></div>
+      <label class="chk"><input type="checkbox" id="sTbOn"> แสดงแถบด้านบน</label>
+      <label class="chk"><input type="checkbox" id="sTbClock"> แสดงเวลา</label>
+      <label class="chk"><input type="checkbox" id="sTbIcons"> แสดงไอคอน wifi / แบต</label>
+      <label class="l">สัญลักษณ์หน้าเวลา<input class="f" id="sTbEm" maxlength="4" placeholder="💗"></label>
+      <label class="l">ข้อความในแถบ (เขียนเองได้)<input class="f" id="sTbTx" maxlength="40" placeholder="เช่น welcome ♡ ร้านเปิดแล้วน้า"></label>
+      <label class="l">รูปของเราเอง (ขวาบน) · GIF ขยับได้<input class="f" type="file" accept="image/*" id="sTbImg"></label>
+      <label class="l">ขนาดรูป <span id="sTbSzV"></span><input type="range" id="sTbSz" min="16" max="64" step="2"></label>
+      <button type="button" class="btn ghost" id="sTbRm">ลบรูปแถบด้านบน</button>
+    </div>
+    <div class="sbox"><b>🔊 เสียงเวลากด</b>
+      <label class="chk"><input type="checkbox" id="sSndOn"> เปิดเสียงเวลากดตรงไหนก็ได้บนหน้าเว็บ</label>
+      <div class="muted">แตะเพื่อฟังและเลือกเสียง</div>
+      <div class="sndgrid" id="sSnd"></div>
+      <label class="l">ความดัง <span id="sSndVV"></span><input type="range" id="sSndV" min="1" max="10" step="1"></label>
+      <label class="chk"><input type="checkbox" id="sSndBtn"> แสดงปุ่ม 🔊 ให้ลูกค้ากดปิด/เปิดเสียงเองได้</label>
+    </div>
+    <div class="sbox"><b>🖼️ แบนเนอร์</b>
+      <label class="l">รูปแบนเนอร์ (ใช้ไฟล์ GIF ถ้าอยากให้รูปขยับเอง)<input class="f" type="file" accept="image/*" id="sBanner"></label>
+      <label class="chk"><input type="checkbox" id="sBnCard"> แบบการ์ดมุมมน เว้นขอบ (ลงมาจากขอบบน)</label>
+      <div class="muted">ความสูงแบนเนอร์</div>
+      <div class="seg" id="sBnAr"><button type="button" data-v="3.2">เตี้ย</button><button type="button" data-v="2.6">กลาง</button><button type="button" data-v="2">สูง</button><button type="button" data-v="1.5">สูงมาก</button></div>
+      <div class="muted">การขยับของแบนเนอร์</div>
+      <div class="bmgrid" id="sBnMo"></div>
+    </div>
     <label class="l">รูปโปรไฟล์<input class="f" type="file" accept="image/*" id="sAvatar"></label>
     <label class="l">ชื่อร้าน<input class="f" id="sName" required></label>
     <label class="l">ข้อความใต้ชื่อ<input class="f" id="sTag"></label>
     <label class="l">คำอธิบาย<textarea class="f" id="sDesc" rows="3"></textarea></label>
     <label class="l">เพิ่มรูปด้านล่าง (เลือกได้หลายรูป)<input class="f" type="file" accept="image/*" multiple id="sImgs"></label>
     <label class="l">ข้อความท้ายเว็บ<input class="f" id="sFoot"></label>
+    <div class="sbox"><b>📢 แถบประกาศวิ่ง</b>
+      <label class="chk"><input type="checkbox" id="sMqOn"> แสดงแถบประกาศ</label>
+      <label class="l">ข้อความที่วิ่ง<input class="f" id="sMq" placeholder="เช่น เปิดรับออเดอร์ทุกวัน ✨"></label>
+      <div class="muted">กรอบพื้นหลังข้อความ</div>
+      <div class="mqgrid" id="sMqSt"></div>
+      <label class="l">ความเร็ว <span id="sMqV"></span><input type="range" id="sMqSp" min="1" max="10" step="1"><span class="rlab"><span>🐢 ช้า</span><span>เร็ว 🐇</span></span></label>
+    </div>
+    <div class="sbox"><b>⭕ วงแหวนโลโก้</b>
+      <div class="ringprev" id="sRingPrev"><i></i></div>
+      <label class="l">ความหนา <span id="sRingV"></span><input type="range" id="sRingW" min="0" max="14" step="1"></label>
+      <div class="crow"><label class="l">สีที่ 1<input type="color" id="sRingA"></label><label class="l">สีที่ 2 (ไล่สี)<input type="color" id="sRingB"></label><label class="l">ขอบใน<input type="color" id="sAvIn"></label></div>
+      <label class="chk"><input type="checkbox" id="sRingSpin"> ให้วงแหวนหมุน</label>
+      <div class="muted">แตะเลือกช่องที่จะเปลี่ยน แล้วแตะสีด้านล่าง</div>
+      <div class="seg" id="sRSlot"><button type="button" data-v="sRingA">สีที่ 1</button><button type="button" data-v="sRingB">สีที่ 2</button><button type="button" data-v="sAvIn">ขอบใน</button></div>
+      <button type="button" class="btn ghost" id="sRSame">ใช้สีเดียว (ไม่ไล่สี)</button>
+      <div class="seg" id="sRTabs"><button type="button" data-v="named">พาสเทล</button><button type="button" data-v="pink">ชมพูสด</button><button type="button" data-v="grads">ไล่สี</button></div>
+      <div id="sRPal" class="rpal"></div>
+    </div>
     <label class="l" id="pinRow">เปลี่ยน PIN หลังบ้าน<input class="f" id="sPin" inputmode="numeric" maxlength="8" placeholder="เว้นว่างถ้าไม่เปลี่ยน"></label>
   </div></div>
   <div class="dfoot">
@@ -485,11 +589,12 @@ input[type=range]{width:100%;accent-color:var(--pa)}
 <dialog id="dPin">
   <form id="fPin" method="dialog">
   <div class="dbody"><div class="form"><h3 style="margin:0">เข้าหลังบ้าน</h3>
-        <input class="f" id="pin" type="password" inputmode="numeric" placeholder="ใส่ PIN" autocomplete="current-password"></div></div>
+        <div class="pinw"><input class="f" id="pin" type="password" inputmode="numeric" placeholder="ใส่ PIN" autocomplete="current-password"><button type="button" class="eye" id="pinEye" aria-label="ดูรหัส">👁️</button></div></div></div>
   <div class="dfoot"><button class="btn ghost" type="button" data-close>ยกเลิก</button><button class="btn pink" type="submit">เข้าสู่ระบบ</button></div>
   </form>
 </dialog>
 
+<button type="button" id="sndBtn" class="sndbtn" hidden>🔊</button>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -594,6 +699,9 @@ function defaults(){
     fonts:{name:'Pattaya',tag:'Mali',desc:'Mali',btn:'Mali',foot:'Mali',mq:'Mali',size:32},
     fx:{on:true,particles:true,tap:true,confetti:true,sound:false,enter:true,float:true,shine:true,ring:true,avatar:true,name:true,typing:true,marq:true,zoom:true,bg:false,
       emoji:'💗🌸',mode:'up',density:3,ptypes:['sparkle','glitter'],pc:['#FFFFFF','#FFD66B'],marqText:'✨ เปิดรับออเดอร์ทุกวัน 10:00-04:00 ✨ ทักแอดมินได้ตลอด ♡'},
+    top:{on:true,clock:true,icons:true,em:'💗',img:'',size:28,text:''},
+    snd:{type:'pop',vol:.7,btn:true},
+    bnr:{card:true,ar:2.6,motion:'zoom'},
     links:[L('check credits'),L('review'),L('บริการต่างๆ'),L('เว็บร้านค้า'),L('line oa'),L('แจ้งปัญหา'),Object.assign(L('รับตัวแทน','💌',true),{mode:'info',info:{img:'',go:'เข้ากลุ่มตัวแทน',text:'สมัครตัวแทนกับร้านเราได้ราคาพิเศษ ✨\n\n♡ ส่วนลดทุกแอป\n♡ มีกลุ่มอัปเดตทุกวัน\n♡ แอดมินดูแลใกล้ชิด'}})]};
 }
 function load(){
@@ -609,7 +717,7 @@ function save(){
   try{localStorage.setItem(KEY,JSON.stringify(db));return true}catch(e){toast('พื้นที่เก็บรูปเต็ม ลองใช้รูปน้อยลงหรือเล็กลงนะคะ');return false}}
 function normalize(d){const D=defaults();d=d||{};
   const c={...D.theme.c,...((d.theme||{}).c||{})};
-  return{...D,...d,shop:{...D.shop,...(d.shop||{})},fonts:{...D.fonts,...(d.fonts||{})},fx:{...D.fx,...(d.fx||{})},
+  return{...D,...d,shop:{...D.shop,...(d.shop||{})},fonts:{...D.fonts,...(d.fonts||{})},fx:{...D.fx,...(d.fx||{})},top:{...D.top,...(d.top||{})},snd:{...D.snd,...(d.snd||{})},bnr:{...D.bnr,...(d.bnr||{})},
     theme:{...D.theme,...(d.theme||{}),c},links:Array.isArray(d.links)?d.links:D.links}}
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200)}
 const isAdmin=()=>document.body.classList.contains('admin');
@@ -626,9 +734,20 @@ function applyVars(){
   for(const k in set)r.setProperty(k,set[k]);
   document.documentElement.style.background=C.bg.a;
   const X=db.fx,b=document.body.classList;
-  [['fx-over','over'],['fx-float','float'],['fx-shine','shine'],['fx-ring','ring'],['fx-avatar','avatar'],['fx-name','name'],['fx-marq','marq'],['fx-zoom','zoom'],['fx-bg','bg']]
+  [['fx-over','over'],['fx-float','float'],['fx-shine','shine'],['fx-ring','ring'],['fx-avatar','avatar'],['fx-name','name'],['fx-marq','marq'],['fx-bg','bg']]
     .forEach(([c,k])=>b.toggle(c,!!(X.on&&X[k])));
+  const B=db.bnr;b.toggle('bn-card',!!B.card);r.setProperty('--bnar',B.ar||2.6);
+  BMO.forEach(([m])=>b.toggle('bm-'+m,m===B.motion&&!!(X.on&&X.zoom)));
+  const mq=document.querySelector('.marq');mq.className='marq'+(X.marqStyle?' ms'+X.marqStyle:'');b.toggle('mq-box',!!(X.marqStyle&&X.on&&X.marq));
+  sndBtn();b.toggle('has-top',!!db.top.on);r.setProperty('--tbimg',(db.top.size||28)+'px');$('topbar').innerHTML=tbHTML(db.top);
 }
+const BMO=[['none','ไม่ขยับ'],['zoom','ซูมช้า ๆ'],['pan','เลื่อนซ้าย-ขวา'],['float','ลอยขึ้นลง'],['sway','โยกเบา ๆ'],['pulse','เต้นตุบ ๆ']];
+const MQS=['แถบเต็ม','แคปซูลมน','เส้นประ','ริบบิ้น','แก้วใส','ลายจุด','ขอบคู่','ลายทาง','หัวใจสองข้าง','ป๊อปเรโทร'];
+const IC_WIFI='<svg class="tbic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M2 9a15 15 0 0 1 20 0M5.5 12.5a10 10 0 0 1 13 0M9 16a5 5 0 0 1 6 0"/><circle cx="12" cy="19.5" r="1.3" fill="currentColor" stroke="none"/></svg>';
+const IC_BAT='<svg class="tbic" viewBox="0 0 26 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="19" height="12" rx="3.5"/><rect x="5" y="9" width="13" height="6" rx="1.5" fill="currentColor" stroke="none"/><path d="M23.5 10v4" stroke-linecap="round"/></svg>';
+const nowHM=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+function tbHTML(T){return`<span class="tb-l">${T.em?`<span>${esc(T.em)}</span>`:''}${T.clock?`<span class="tbclk">${nowHM()}</span>`:''}${T.text?`<span class="tbtx">${esc(T.text)}</span>`:''}</span><span class="tb-r">${T.img?`<img class="tb-img" src="${esc(T.img)}" alt="">`:''}${T.icons?IC_WIFI+IC_BAT:''}</span>`}
+setInterval(()=>document.querySelectorAll('.tbclk').forEach(e=>e.textContent=nowHM()),20000);
 function linkHtml(l,i){
   const f=l.frame||db.theme.frame,href=fixUrl(l.url);
   return `<a class="lk f${f}${l.full?' full':''}" style="--d:${(i%5)*.35}s;--d2:${i*.07}s" data-id="${l.id}" href="${href?esc(href):'#'}" target="_blank" rel="noopener"><span class="shw"><i></i></span>${l.emoji?`<span class="em">${esc(l.emoji)}</span>`:''}<span>${esc(l.label)}</span><span class="edit-dot">แก้</span></a>`;
@@ -639,7 +758,8 @@ function render(){
   const bn=$('banner');if(S.banner){bn.style.backgroundImage=`url(${S.banner})`;bn.style.backgroundSize='cover'}else{bn.style.backgroundImage='';bn.style.backgroundSize=''}
   const av=$('avatar');av.style.backgroundImage=S.avatar?`url(${S.avatar})`:'';av.textContent=S.avatar?'':'🌸';
   $('mq1').textContent=db.fx.marqText;$('mq2').textContent=db.fx.marqText;
-  document.title=S.name;
+  document.querySelector('.marq .track').style.animationDuration=(34-(db.fx.marqSpeed??6)*3)+'s';
+  document.title=S.name;if(S.avatar){$('fav').href=S.avatar;$('favA').href=S.avatar}
   const L=$('links');
   L.className='links'+(db.theme.cols==1?' one':'')+(playEnter&&db.fx.on&&db.fx.enter?' enter':'');playEnter=false;
   L.innerHTML=db.links.map(linkHtml).join('');
@@ -727,9 +847,33 @@ const topPE=new PE($('fxc'),()=>({active:false,types:[],colors:['#fff'],density:
 addEventListener('resize',()=>{mainPE.resize();topPE.resize()});
 mainPE.start();topPE.start();
 let actx;
-function pop(){try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();const o=actx.createOscillator(),g=actx.createGain(),t=actx.currentTime;
-  o.type='sine';o.frequency.setValueAtTime(520,t);o.frequency.exponentialRampToValueAtTime(1300,t+.09);
-  g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+.16);o.connect(g).connect(actx.destination);o.start(t);o.stop(t+.17)}catch(e){}}
+function tone(f,type,st,dur,vol,f2){const t=actx.currentTime+st,o=actx.createOscillator(),g=actx.createGain();o.type=type;o.frequency.setValueAtTime(f,t);
+  if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+dur*.7);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.008);
+  g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g).connect(actx.destination);o.start(t);o.stop(t+dur+.02)}
+function noise(st,dur,vol,fq){const t=actx.currentTime+st,n=actx.sampleRate*dur,b=actx.createBuffer(1,n,actx.sampleRate),d=b.getChannelData(0);
+  for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n);const s=actx.createBufferSource(),f=actx.createBiquadFilter(),g=actx.createGain();
+  s.buffer=b;f.type='bandpass';f.frequency.value=fq;g.gain.value=vol;s.connect(f).connect(g).connect(actx.destination);s.start(t)}
+const SNDS=[
+ ['pop','ป๊อป',v=>tone(520,'sine',0,.16,.2*v,1300)],
+ ['bubble','ฟองสบู่',v=>{tone(300,'sine',0,.12,.22*v,900);tone(700,'sine',.05,.1,.12*v,1400)}],
+ ['click','คลิกนุ่ม',v=>{tone(1800,'triangle',0,.05,.14*v);noise(0,.03,.25*v,3000)}],
+ ['bell','กระดิ่ง',v=>{tone(1320,'sine',0,.9,.16*v);tone(2640,'sine',0,.5,.05*v);tone(3960,'sine',0,.3,.02*v)}],
+ ['kira','วิ้งค์ ✨',v=>[1568,2093,2637,3136].forEach((f,i)=>tone(f,'sine',i*.06,.35,.1*v))],
+ ['drop','หยดน้ำ',v=>tone(1400,'sine',0,.18,.22*v,420)],
+ ['coin','เหรียญ',v=>{tone(988,'square',0,.08,.07*v);tone(1319,'square',.08,.35,.07*v)}],
+ ['heart','หัวใจ',v=>{tone(784,'sine',0,.18,.16*v);tone(1047,'sine',.12,.3,.16*v)}],
+ ['xylo','ระนาด',v=>{tone(1047,'triangle',0,.4,.22*v);tone(2094,'sine',0,.15,.05*v)}],
+ ['magic','เวทมนตร์',v=>{tone(600,'sine',0,.6,.12*v,2400);tone(900,'triangle',.08,.5,.06*v,3000)}],
+ ['boing','เด้งดึ๋ง',v=>tone(180,'sine',0,.35,.25*v,520)],
+ ['tick','ติ๊กเบา ๆ',v=>tone(2400,'sine',0,.04,.12*v)]];
+function playSnd(k,force){try{
+  if(!force&&(!db.fx.on||!db.fx.sound||sndMuted()))return;
+  actx=actx||new (window.AudioContext||window.webkitAudioContext)();if(actx.state==='suspended')actx.resume();
+  const S=SNDS.find(x=>x[0]===(k||db.snd.type))||SNDS[0];S[2](db.snd.vol??.7)}catch(e){}}
+const pop=()=>playSnd(null,true);
+const sndMuted=()=>{try{return localStorage.getItem('snd-mute')==='1'}catch(e){return false}};
+function sndBtn(){const b=$('sndBtn');b.hidden=!(db.fx.on&&db.fx.sound&&db.snd.btn);b.textContent=sndMuted()?'🔇':'🔊';b.setAttribute('aria-label',sndMuted()?'เปิดเสียง':'ปิดเสียง')}
+document.addEventListener('pointerdown',e=>{if(e.target.closest('#sndBtn,[data-snd]'))return;playSnd()},true);
 document.addEventListener('pointerdown',e=>{
   if(!fxOn('tap')||e.target.closest('dialog,.abar,.trybar,.lk'))return;
   topPE.burst(e.clientX,e.clientY,db.fx.pc.concat(db.theme.c.border.a),10);
@@ -746,12 +890,10 @@ function openInfo(l){
   $('iGo').innerHTML=href?`<a class="lk f${f}" href="${esc(href)}" target="_blank" rel="noopener"><span class="shw"><i></i></span><span>${esc(I.go||'ไปที่ลิงก์')}</span><span class="arr">→</span></a>`:'';
   const d=$('dInfo');if(!d.open)d.showModal();$('dInfo').querySelector('.isc').scrollTop=0;
   requestAnimationFrame(()=>{infoPE.resize();infoPE.start()});
-  if(db.fx.on&&db.fx.sound)pop();
 }
 $('dInfo').addEventListener('close',()=>infoPE.stop());
 $('dInfo').addEventListener('click',e=>{if(e.target===$('dInfo'))$('dInfo').close()});
 $('iX').onclick=()=>$('dInfo').close();
-$('iGo').addEventListener('click',()=>{if(db.fx.on&&db.fx.sound)pop()});
 
 /* link clicks */
 $('links').addEventListener('click',e=>{
@@ -761,7 +903,6 @@ $('links').addEventListener('click',e=>{
   if(lnk&&lnk.mode==='info'){e.preventDefault();openInfo(lnk);return}
   const r=a.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
   if(fxOn('confetti'))topPE.confetti(x,y,[db.theme.c.border.a,db.theme.c.name.a,db.theme.c.name.b,'#FFFFFF','#FED369',...db.fx.pc]);
-  if(db.fx.on&&db.fx.sound)pop();
   if(a.getAttribute('href')==='#'){e.preventDefault();toast('ปุ่มนี้ยังไม่ได้ใส่ลิงก์ค่ะ')}
 });
 $('imgs').addEventListener('click',e=>{const b=e.target.closest('[data-rmimg]');if(b&&confirm('ลบรูปนี้?')){db.shop.imgs.splice(+b.dataset.rmimg,1);save();render()}});
@@ -929,23 +1070,77 @@ $('bAdd').onclick=()=>openLink(null);
 function shrink(file,max=1000){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>{
   const w=Math.min(max,img.width),h=Math.round(img.height*w/img.width),c=document.createElement('canvas');c.width=w;c.height=h;
   c.getContext('2d').drawImage(img,0,0,w,h);res(c.toDataURL('image/jpeg',.78))};img.onerror=rej;img.src=URL.createObjectURL(file)})}
+const rawData=f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)});
 async function uploadImg(file,max){
-  const data=await shrink(file,max);if(!REMOTE)return data;
+  const data=file.type==='image/gif'?await rawData(file):await shrink(file,max);if(!REMOTE)return data;
   if(!IMGBB_KEY)throw new Error('ยังไม่ได้ใส่ IMGBB_KEY');
   const fd=new FormData();fd.append('image',data.split(',')[1]);
   const r=await fetch('https://api.imgbb.com/1/upload?key='+encodeURIComponent(IMGBB_KEY),{method:'POST',body:fd});
   const j=await r.json();if(!j.success)throw new Error('อัปโหลดรูปไม่สำเร็จ');return j.data.url;
 }
 $('bShop').onclick=()=>{const S=db.shop;$('sName').value=S.name;$('sTag').value=S.tag;$('sDesc').value=S.desc;$('sFoot').value=S.foot||'';
+  $('sMqOn').checked=!!db.fx.marq;$('sMq').value=db.fx.marqText||'';$('sMqSp').value=db.fx.marqSpeed??6;$('sMqV').textContent=$('sMqSp').value;
+  const T=db.top;tbDraft={...T};$('sTbOn').checked=!!T.on;$('sTbClock').checked=!!T.clock;$('sTbIcons').checked=!!T.icons;$('sTbEm').value=T.em||'';$('sTbTx').value=T.text||'';
+  sndDraft=db.snd.type;$('sSndOn').checked=!!db.fx.sound;$('sSndV').value=Math.round((db.snd.vol??.7)*10);$('sSndVV').textContent=$('sSndV').value;$('sSndBtn').checked=!!db.snd.btn;renderSnd();
+  $('sTbSz').value=T.size||28;$('sTbImg').value='';tbPrev();
+  bnDraft={...db.bnr};$('sBnCard').checked=!!bnDraft.card;pressSeg($('sBnAr'),String(bnDraft.ar));renderBnMo();
+  mqSt=db.fx.marqStyle||0;renderMqSt();
+  rSlot='sRingA';pressSeg($('sRSlot'),rSlot);renderRPal();
+  const RC=db.theme.c.ring;$('sRingA').value=RC.a;$('sRingB').value=RC.t==='grad'?RC.b:RC.a;$('sAvIn').value=db.theme.c.avIn.a;
+  $('sRingW').value=db.theme.ringW??5;$('sRingSpin').checked=!!db.fx.ring;ringPrev();
   ['sBanner','sAvatar','sImgs','sPin'].forEach(i=>$(i).value='');$('pinRow').style.display=REMOTE?'none':'';$('dShop').showModal()};
 $('fShop').onsubmit=async e=>{e.preventDefault();const S=db.shop;
   S.name=$('sName').value.trim()||S.name;S.tag=$('sTag').value.trim();S.desc=$('sDesc').value.trim();S.foot=$('sFoot').value.trim();
   const p=$('sPin').value.trim();if(p)db.pin=p;
+  db.fx.marqSpeed=+$('sMqSp').value;db.fx.marqStyle=mqSt;
+  db.fx.sound=$('sSndOn').checked;Object.assign(db.snd,{type:sndDraft,vol:+$('sSndV').value/10,btn:$('sSndBtn').checked});
+  Object.assign(db.top,{text:$('sTbTx').value.trim(),on:$('sTbOn').checked,clock:$('sTbClock').checked,icons:$('sTbIcons').checked,em:$('sTbEm').value.trim(),size:+$('sTbSz').value,img:tbDraft.img});
+  db.bnr={...bnDraft,card:$('sBnCard').checked};if(db.bnr.motion!=='none')db.fx.zoom=true;  db.fx.marq=$('sMqOn').checked;db.fx.marqText=$('sMq').value.trim()||db.fx.marqText;
+  const ra=$('sRingA').value.toUpperCase(),rb=$('sRingB').value.toUpperCase(),R=db.theme.c.ring;
+  R.a=ra;R.b=rb;R.t=ra===rb?'solid':'grad';if(R.deg==null)R.deg=135;
+  db.theme.c.avIn={...db.theme.c.avIn,t:'solid',a:$('sAvIn').value.toUpperCase(),b:$('sAvIn').value.toUpperCase()};
+  db.theme.ringW=+$('sRingW').value;db.fx.ring=$('sRingSpin').checked;
   const hasImg=$('sBanner').files[0]||$('sAvatar').files[0]||$('sImgs').files.length;if(hasImg)toast('กำลังอัปโหลดรูป...');
   try{if($('sBanner').files[0])S.banner=await uploadImg($('sBanner').files[0],1200);
+    if($('sTbImg').files[0])db.top.img=await uploadImg($('sTbImg').files[0],300);
     if($('sAvatar').files[0])S.avatar=await uploadImg($('sAvatar').files[0],400);
     for(const f of $('sImgs').files)S.imgs.push(await uploadImg(f,1000))}catch(err){toast(err.message||'อัปโหลดรูปไม่ได้')}
   if(save()){render();$('dShop').close();toast('บันทึกข้อมูลร้านแล้ว')}};
+function ringPrev(){const a=$('sRingA').value,b=$('sRingB').value,w=+$('sRingW').value;
+  $('sRingPrev').style.background=a===b?a:`linear-gradient(135deg,${a},${b})`;$('sRingPrev').style.padding=Math.round(w*0.64)+'px';
+  $('sRingPrev').querySelector('i').style.background=$('sAvIn').value;$('sRingV').textContent=w+' px'}
+['sRingA','sRingB','sAvIn','sRingW'].forEach(i=>$(i).addEventListener('input',ringPrev));
+let tbDraft={},bnDraft={},mqSt=0,sndDraft='pop';
+const SNDEM={pop:'🫧',bubble:'🫧',click:'👆',bell:'🔔',kira:'✨',drop:'💧',coin:'🪙',heart:'💗',xylo:'🎵',magic:'🪄',boing:'🌀',tick:'⏱️'};
+function renderSnd(){$('sSnd').innerHTML=SNDS.map(([k,n])=>`<button type="button" data-snd="${k}" aria-pressed="${k===sndDraft}"><span>${SNDEM[k]||'♪'}</span>${n}</button>`).join('')}
+$('sSnd').onclick=e=>{const b=e.target.closest('[data-snd]');if(!b)return;sndDraft=b.dataset.snd;const v=db.snd.vol;db.snd.vol=+$('sSndV').value/10;playSnd(sndDraft,true);db.snd.vol=v;renderSnd()};
+$('sSndV').oninput=e=>{$('sSndVV').textContent=e.target.value;const v=db.snd.vol;db.snd.vol=+e.target.value/10;playSnd(sndDraft,true);db.snd.vol=v};
+$('sndBtn').onclick=()=>{try{localStorage.setItem('snd-mute',sndMuted()?'0':'1')}catch(e){}sndBtn();if(!sndMuted())playSnd()};
+function tbPrev(){const d={...tbDraft,clock:$('sTbClock').checked,icons:$('sTbIcons').checked,em:$('sTbEm').value.trim(),text:$('sTbTx').value.trim()};
+  $('sTbPrev').style.setProperty('--tbimg',$('sTbSz').value+'px');$('sTbPrev').innerHTML=tbHTML(d);$('sTbSzV').textContent=$('sTbSz').value+' px'}
+['sTbClock','sTbIcons','sTbEm','sTbSz','sTbTx'].forEach(i=>$(i).addEventListener('input',tbPrev));
+$('sTbImg').onchange=e=>{const f=e.target.files[0];if(!f)return;tbDraft.img=URL.createObjectURL(f);tbPrev()};
+$('sTbRm').onclick=()=>{tbDraft.img='';$('sTbImg').value='';tbPrev()};
+function renderBnMo(){const bg=db.shop.banner?`url(${db.shop.banner})`:'';
+  $('sBnMo').innerHTML=BMO.map(([m,n])=>`<button type="button" data-v="${m}" aria-pressed="${bnDraft.motion===m}"><span class="bmp ${m}"><i${bg?` style="background-image:${bg}"`:''}></i></span>${n}</button>`).join('')}
+$('sBnMo').onclick=e=>{const b=e.target.closest('[data-v]');if(!b)return;bnDraft.motion=b.dataset.v;renderBnMo()};
+$('sBnAr').onclick=e=>{const b=e.target.closest('[data-v]');if(!b)return;bnDraft.ar=+b.dataset.v;pressSeg($('sBnAr'),b.dataset.v)};
+function renderMqSt(){const t=esc($('sMq').value||db.fx.marqText||'ประกาศ');
+  $('sMqSt').innerHTML=MQS.map((n,i)=>`<button type="button" data-v="${i}" aria-pressed="${mqSt===i}"><span class="mqp${i?' ms'+i:''}"><span>${t}</span></span>${n}</button>`).join('')}
+$('sMqSt').onclick=e=>{const b=e.target.closest('[data-v]');if(!b)return;mqSt=+b.dataset.v;renderMqSt()};
+let rSlot='sRingA',rTab='named';
+function renderRPal(){pressSeg($('sRTabs'),rTab);const P=$('sRPal');
+  if(rTab==='named'){P.className='rpal pal';P.innerHTML=NAMED.map(c=>`<button type="button" class="it" data-hex="${c.h}"><b style="background:${c.h}"></b>${esc(c.n)}<br>${c.h}</button>`).join('')}
+  else if(rTab==='pink'){P.className='rpal pal small';P.innerHTML=PINKS.map(h=>`<button type="button" class="it" data-hex="${h}"><b style="background:${h}"></b>${h.slice(1)}</button>`).join('')}
+  else{P.className='rpal pal grads';P.innerHTML=GRADS.map(([a,b],i)=>`<button type="button" class="it" data-grad="${i}"><b style="background:linear-gradient(135deg,${a},${b})"></b>${a.slice(1)} → ${b.slice(1)}</button>`).join('')}}
+$('sRSlot').onclick=e=>{const b=e.target.closest('[data-v]');if(b){rSlot=b.dataset.v;pressSeg($('sRSlot'),rSlot)}};
+$('sRTabs').onclick=e=>{const b=e.target.closest('[data-v]');if(b){rTab=b.dataset.v;renderRPal()}};
+$('sRPal').onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.grad!=null){const[a,c]=GRADS[+b.dataset.grad];$('sRingA').value=a.toLowerCase();$('sRingB').value=c.toLowerCase()}
+  else $(rSlot).value=b.dataset.hex.toLowerCase();ringPrev()};
+$('sRSame').onclick=()=>{$('sRingB').value=$('sRingA').value;ringPrev()};
+$('sMqSp').oninput=e=>$('sMqV').textContent=e.target.value;
+$('pinEye').onclick=()=>{const i=$('pin');const show=i.type==='password';i.type=show?'text':'password';$('pinEye').textContent=show?'🙈':'👁️';i.focus()};
 $('sClear').onclick=()=>{if(!confirm('ลบแบนเนอร์และรูปโปรไฟล์?'))return;db.shop.banner='';db.shop.avatar='';save();render()};
 
 /* ---------- admin entry ---------- */
